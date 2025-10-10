@@ -1,0 +1,22 @@
+# Compilados e binários
+*.exe
+*.o
+*.out
+*.obj
+
+# Pasta de build
+build/
+
+# Configurações locais do VSCode
+.vscode/
+
+# Arquivos temporários do sistema
+.DS_Store
+Thumbs.db
+
+# Backups ou testes
+*.bak
+*.tmp
+
+# Arquivos CSV de dados (se quiser manter locais e não subir)
+#dados/*.csv
