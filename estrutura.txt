@@ -1,3 +1,7 @@
+PROJETO_C – Estrutura e Motivação
+
+Estrutura do Projeto:
+
 PROJETO_C/
 │
 ├── src/
@@ -28,3 +32,48 @@ PROJETO_C/
 │   └── pontos.csv
 │
 └── Makefile
+
+Descrição da Estrutura:
+
+1. src/
+   Contém todo o código-fonte do projeto, organizado por módulos:
+   - main.c: ponto de entrada do programa.
+   - Subpastas por funcionalidade:
+     - dados/: funções genéricas para manipulação de arquivos CSV.
+     - users/: estrutura User e funções de cadastro e autenticação.
+     - equipes/: estrutura Equipe e funções para criação/edição/rotação de mentores.
+     - hackathons/: estrutura Hackathon e funções de criação/edição.
+     - votacao/: estrutura Votacao e funções para abrir votações, verificar status e registrar pontos.
+
+   Motivo: Organização modular, fácil manutenção, escalável e colaboração facilitada.
+
+2. Arquivos .h e .c
+   - .h (headers): declarações de funções, structs e constantes.
+   - .c: implementações das funções declaradas nos headers.
+
+   Motivo: Separação de declaração e implementação para reuso e evitar conflitos de compilação.
+
+3. dados/
+   Contém arquivos CSV que armazenam informações persistentes:
+   - users.csv, equipes.csv, user_equipe.csv, hackathon.csv, votacao.csv, jurados.csv, pontos.csv
+
+   Motivo: Fácil leitura, edição e integração com funções C, sem necessidade de banco de dados complexo.
+
+4. Makefile
+   Automatiza a compilação do projeto:
+   - Compila arquivos .c em .o no diretório build/
+   - Gera o executável final (programa.exe)
+   - Comandos úteis: make (compilar), make clean (limpar)
+
+   Motivo: Automatização, compilação rápida e consistente, redução de erros.
+
+5. build/
+   Contém arquivos objeto (.o) gerados durante a compilação, organizados em subpastas correspondentes à estrutura de src/.
+
+Benefícios da Estrutura:
+
+- Modularidade: cada módulo encapsula sua lógica.
+- Escalabilidade: fácil adicionar novos módulos.
+- Colaboração: múltiplos desenvolvedores podem trabalhar sem conflitos.
+- Manutenção: clara separação de declarações e implementações.
+- Automação: Makefile garante compilação eficiente e consistente.
