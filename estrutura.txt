@@ -1,0 +1,30 @@
+PROJETO_C/
+│
+├── src/
+│   ├── main.c
+│   ├── dados/
+│   │   ├── dados.h
+│   │   └── dados.c
+│   ├── users/
+│   │   ├── user.h
+│   │   └── user.c
+│   ├── equipes/
+│   │   ├── equipe.h
+│   │   └── equipe.c
+│   ├── hackathons/
+│   │   ├── hackathon.h
+│   │   └── hackathon.c
+│   └── votacao/
+│       ├── votacao.h
+│       └── votacao.c
+│
+├── dados/           
+│   ├── users.csv
+│   ├── equipes.csv
+│   ├── user_equipe.csv
+│   ├── hackathon.csv
+│   ├── votacao.csv
+│   ├── jurados.csv
+│   └── pontos.csv
+│
+└── Makefile
