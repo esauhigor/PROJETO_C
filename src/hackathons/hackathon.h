@@ -1,8 +1,6 @@
 #ifndef HACKATHON_H
 #define HACKATHON_H
 
-#include<stdio.h>
-
 typedef struct hackathon {
     int id;
     int data_inicio;

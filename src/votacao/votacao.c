@@ -4,6 +4,7 @@
 
 #include "votacao.h"
 #include "../dados/dados.h"
+#include "../users/user.h"
 
 int verificar_votacao(){
 
@@ -64,7 +65,8 @@ void fechar_votacao(){
     saida:
     inteiro como booleano
 
-    Função vai no arquivo “dados/pontos.csv” 
+    Função vai no arquivo “dados/pontos.csv”, puxa a quantide de rows existente com o id da votação de entrada, equipara o campo "jurados" (é a quantidade de jurados dessa votação
+    ), da entedidade de entrada com o quantidade de rows existente com esse id, se for igual ou superior 
 
 
     */
