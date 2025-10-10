@@ -1,0 +1,7 @@
+ID,DATA_INICIO,DATA_FIM,TEMA,MAXIMO,VOTACAO,REGRAS
+1,20251001,20251005,Tecnologia,3,3,"Participação individual"
+2,20251110,20251115,Inovação,2,2,"Trabalho em equipe"
+3,20251201,20251207,Robótica,4,1,"Entrega de protótipo"
+4,20260105,20260110,IA,6,3,"Prova prática obrigatória"
+5,20260215,20260220,Jogos,2,1,"Prova de conceito"
+

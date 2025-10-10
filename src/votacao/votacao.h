@@ -1,5 +1,5 @@
-#ifndef VOTACAO.H
-#define VOTACAO.H
+#ifndef VOTACAO_H
+#define VOTACAO_H
 
 typedef struct votacao{
     int id;
@@ -10,7 +10,7 @@ typedef struct votacao{
 }Votacao;
 
 int verificar_votacao();
-void aderir_jurados();
+int aderir_jurados();
 
 void abrir_votacao();
 void aderir_pontos();

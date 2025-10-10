@@ -16,10 +16,11 @@ int verificar_votacao(){
     notas higor: use ponteiros, sempre chamee outras funções passando o ponteiro de alguma coisa
 
     */
+   return 1;
 
 }
 
-void aderir_jurados(){
+int aderir_jurados(){
     /*
     entradas:
     endereço de usuario, ou só o id dele.
@@ -29,6 +30,7 @@ void aderir_jurados(){
 
     Essa função escreve no arquivo "jurados.csv", usando a função abrir_csv() e mandando o nome do arquivo e o modo como "a", temos que verificar se o id do usuario em questão é mentor ou jurado
     */
+   return 1;
 }
 
 void abrir_votacao(){
@@ -48,8 +50,22 @@ void aderir_pontos(){
     /*
     use a função "abrir_csv("pontos.csv", "a")" ela vai abrir um arquivo e retornar um endereço  de FILE
 
-    Função que acessa o arquivo “dados/votacao.csv” para verificar se existe alguma votação em aberto desse hackathon. Caso encontre, retorna o ID dessa votação e adiciona uma nova linha no arquivo “dados/pontos.csv” com os campos “id”, “id_equipe”, “id_hackathon”, “id_votacao”, “comentário” e “ponto”. Antes de inserir a linha, é necessário garantir que o usuário em questão seja um mentor, utilizando a função “verifica_cargo()”, verificar se o mentor ainda não votou, se já votou verificar se todos já votaram, pra mudar a flag da votação.
+    Função que acessa o arquivo “dados/votacao.csv” para verificar se existe alguma votação em aberto desse hackathon. Caso encontre, retorna a struct dessa votação e adiciona uma nova linha no arquivo “dados/pontos.csv” com os campos “id”, “id_equipe”, “id_hackathon”, “id_votacao”, “comentário” e “ponto”. Antes de inserir a linha, é necessário garantir que o usuário em questão seja um mentor, utilizando a função “verifica_cargo()”, verificar se o mentor ainda não votou, se já votou verificar se todos já votaram, pra mudar a flag da votação.
 
     */
    printf("Print teste: aderir_pontos()");
+}
+
+void fechar_votacao(){
+    /*
+    entrada:
+    endereço de uma entidade de votacao 
+
+    saida:
+    inteiro como booleano
+
+    Função vai no arquivo “dados/pontos.csv” 
+
+
+    */
 }

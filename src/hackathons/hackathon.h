@@ -1,5 +1,5 @@
-#ifndef HACKATHON.H
-#define HACKATHON.H
+#ifndef HACKATHON_H
+#define HACKATHON_H
 
 #include<stdio.h>
 
