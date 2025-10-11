@@ -18,6 +18,10 @@ PROJETO_C/
 │   ├── hackathons/
 │   │   ├── hackathon.h
 │   │   └── hackathon.c
+│   ├── ultils/
+│   │   ├── files
+│   │       ├── files.h
+│   │       └── files.c
 │   └── votacao/
 │       ├── votacao.h
 │       └── votacao.c

@@ -1,5 +1,5 @@
 #include "files.h"
-#include "../../src/dados/dados.h"
+#include "../../dados/dados.h"
 
 #include <string.h>
 

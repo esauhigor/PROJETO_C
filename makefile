@@ -1,4 +1,7 @@
-# Makefile para PROJETO_C (Windows / PowerShell)
+# ==========================
+# Makefile para PROJETO_C
+# Compatível com Windows (PowerShell / CMD)
+# ==========================
 
 # Compilador
 CC = gcc
@@ -9,46 +12,63 @@ CFLAGS = -Wall -g
 # Pasta de build
 BUILD_DIR = build
 
-# Executável final
+# Nome do executável
 TARGET = programa.exe
 
-# Garante que todas as pastas necessárias existam
+# ==========================
+# Preparação das pastas
+# ==========================
 prepare:
-	@if not exist build mkdir build
-	@if not exist build\dados mkdir build\dados
-	@if not exist build\users mkdir build\users
-	@if not exist build\equipes mkdir build\equipes
-	@if not exist build\hackathons mkdir build\hackathons
-	@if not exist build\votacao mkdir build\votacao
+	@if not exist $(BUILD_DIR) mkdir $(BUILD_DIR)
+	@if not exist $(BUILD_DIR)\dados mkdir $(BUILD_DIR)\dados
+	@if not exist $(BUILD_DIR)\users mkdir $(BUILD_DIR)\users
+	@if not exist $(BUILD_DIR)\equipes mkdir $(BUILD_DIR)\equipes
+	@if not exist $(BUILD_DIR)\hackathons mkdir $(BUILD_DIR)\hackathons
+	@if not exist $(BUILD_DIR)\votacao mkdir $(BUILD_DIR)\votacao
+	@if not exist $(BUILD_DIR)\ultils mkdir $(BUILD_DIR)\ultils
+	@if not exist $(BUILD_DIR)\ultils\files mkdir $(BUILD_DIR)\ultils\files
 
-# Lista todos os arquivos .c
+# ==========================
+# Fontes e objetos
+# ==========================
 SRC = $(wildcard src/*.c) \
       $(wildcard src/dados/*.c) \
       $(wildcard src/users/*.c) \
       $(wildcard src/equipes/*.c) \
       $(wildcard src/hackathons/*.c) \
-      $(wildcard src/votacao/*.c)
+      $(wildcard src/votacao/*.c) \
+      $(wildcard src/ultils/files/*.c)
 
-# Gera os nomes dos .o correspondentes
 OBJ = $(patsubst src/%.c,$(BUILD_DIR)/%.o,$(SRC))
 
-# Alvo padrão: prepara as pastas e compila o projeto
+# ==========================
+# Alvo padrão
+# ==========================
 all: prepare $(TARGET)
 
-# Linka o executável final
+# ==========================
+# Linkagem final
+# ==========================
 $(TARGET): $(OBJ)
 	$(CC) $(CFLAGS) -o $@ $^
 
-# Compila cada .c em .o (cria subpastas conforme necessário)
+# ==========================
+# Compilação dos .c em .o
+# ==========================
 $(BUILD_DIR)/%.o: src/%.c
 	@if not exist $(BUILD_DIR)\$(subst /,\,$(dir $@)) mkdir $(BUILD_DIR)\$(subst /,\,$(dir $@))
 	$(CC) $(CFLAGS) -c $< -o $@
 
-# Limpa arquivos compilados
+# ==========================
+# Limpeza
+# ==========================
 clean:
-	@if exist $(BUILD_DIR) rmdir /S /Q $(BUILD_DIR)
-	@if exist $(TARGET) del $(TARGET)
+	del /Q $(BUILD_DIR)\*.o 2>nul
+	del /S /Q $(BUILD_DIR)\* 2>nul
+	if exist $(TARGET) del $(TARGET)
 
-# Executa o programa
-run: $(TARGET)
+# ==========================
+# Executar o programa
+# ==========================
+run: all
 	./$(TARGET)
