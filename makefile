@@ -9,10 +9,19 @@ CFLAGS = -Wall -g
 # Pasta de build
 BUILD_DIR = build
 
-# Executável
+# Executável final
 TARGET = programa.exe
 
-# Lista todos os arquivos .c do projeto
+# Garante que todas as pastas necessárias existam
+prepare:
+	@if not exist build mkdir build
+	@if not exist build\dados mkdir build\dados
+	@if not exist build\users mkdir build\users
+	@if not exist build\equipes mkdir build\equipes
+	@if not exist build\hackathons mkdir build\hackathons
+	@if not exist build\votacao mkdir build\votacao
+
+# Lista todos os arquivos .c
 SRC = $(wildcard src/*.c) \
       $(wildcard src/dados/*.c) \
       $(wildcard src/users/*.c) \
@@ -20,27 +29,26 @@ SRC = $(wildcard src/*.c) \
       $(wildcard src/hackathons/*.c) \
       $(wildcard src/votacao/*.c)
 
-# Converte cada src/arquivo.c para build/arquivo.o mantendo hierarquia
+# Gera os nomes dos .o correspondentes
 OBJ = $(patsubst src/%.c,$(BUILD_DIR)/%.o,$(SRC))
 
-# Target padrão
-all: $(TARGET)
+# Alvo padrão: prepara as pastas e compila o projeto
+all: prepare $(TARGET)
 
-# Linka o executável
+# Linka o executável final
 $(TARGET): $(OBJ)
 	$(CC) $(CFLAGS) -o $@ $^
 
-# Compila cada .c em .o
-# Cria pastas automaticamente no Windows
+# Compila cada .c em .o (cria subpastas conforme necessário)
 $(BUILD_DIR)/%.o: src/%.c
 	@if not exist $(BUILD_DIR)\$(subst /,\,$(dir $@)) mkdir $(BUILD_DIR)\$(subst /,\,$(dir $@))
 	$(CC) $(CFLAGS) -c $< -o $@
 
-# Limpeza
+# Limpa arquivos compilados
 clean:
-	del /Q $(BUILD_DIR)\*.o 2>nul
-	if exist $(TARGET) del $(TARGET)
+	@if exist $(BUILD_DIR) rmdir /S /Q $(BUILD_DIR)
+	@if exist $(TARGET) del $(TARGET)
 
-# Rodar o programa
+# Executa o programa
 run: $(TARGET)
 	./$(TARGET)
