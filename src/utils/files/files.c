@@ -6,10 +6,10 @@
 int ultimo_id(const char *nome_arquivo){
 
     FILE *f = abrir_csv(nome_arquivo, "r");
-    if (!f) return -1;
+    if (!f) return -2;
 
     char linha[256];
-    int ultimo = 0;
+    int ultimo = -1;
 
     fgets(linha, sizeof(linha), f);
     
