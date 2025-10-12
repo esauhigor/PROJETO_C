@@ -1,5 +1,6 @@
 #include "files.h"
 #include "../../dados/dados.h"
+#include "../../users/user.h"
 
 #include <string.h>
 
@@ -22,4 +23,10 @@ int ultimo_id(const char *nome_arquivo){
     }
     fclose(f);
     return ultimo;
+}
+
+int verifica_cargo(const char *nome_arquivo, Cargo cargo){
+    FILE *f = abrir_csv("users.csv", "r");
+
+    
 }
