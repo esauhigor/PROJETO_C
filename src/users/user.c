@@ -33,3 +33,26 @@ void cadastrar_user(User *u){
 
 
 }
+
+User* procuras_user(int id){
+    FILE *f = abrir_csv("users.csv", "r");
+    User user = {-1};
+
+    if ( ftell(f) == 0){
+        return;
+    }
+    char linha[256];
+    int id_retorno = -1;
+
+    fgets(linha, sizeof(linha), f);
+    
+    while( fgets(linha, sizeof(linha), f) ){
+        linha[strcspn(linha, "\n")] = '\0';
+        int id;
+        if (sscanf(linha, "%d,", &id) == 1){
+            id_retorno = id;
+        }
+    }
+    fclose(f);
+
+}

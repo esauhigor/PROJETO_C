@@ -15,7 +15,7 @@ int ultimo_id(const char *nome_arquivo){
     fgets(linha, sizeof(linha), f);
     
     while( fgets(linha, sizeof(linha), f) ){
-        linha[strcspn(linha, "\n")] == '\0';
+        linha[strcspn(linha, "\n")] = '\0';
         int id;
         if (sscanf(linha, "%d,", &id) == 1){
             ultimo = id;
@@ -25,8 +25,10 @@ int ultimo_id(const char *nome_arquivo){
     return ultimo;
 }
 
-int verifica_cargo(const char *nome_arquivo, Cargo cargo){
+int verifica_cargo(const char *nome_arquivo, User *u){
     FILE *f = abrir_csv("users.csv", "r");
 
-    
+    if(ftell(f) == 0){
+
+    }
 }
