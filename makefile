@@ -25,8 +25,8 @@ prepare:
 	@if not exist $(BUILD_DIR)\equipes mkdir $(BUILD_DIR)\equipes
 	@if not exist $(BUILD_DIR)\hackathons mkdir $(BUILD_DIR)\hackathons
 	@if not exist $(BUILD_DIR)\votacao mkdir $(BUILD_DIR)\votacao
-	@if not exist $(BUILD_DIR)\ultils mkdir $(BUILD_DIR)\utils
-	@if not exist $(BUILD_DIR)\ultils\files mkdir $(BUILD_DIR)\utils\files
+	@if not exist $(BUILD_DIR)\utils mkdir $(BUILD_DIR)\utils
+	@if not exist $(BUILD_DIR)\utils\files mkdir $(BUILD_DIR)\utils\files
 
 # ==========================
 # Fontes e objetos
