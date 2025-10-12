@@ -26,14 +26,11 @@ int ultimo_id(const char *nome_arquivo){
 }
 
 int verifica_cargo(int id, Cargo cargo){
-
     User *u_interno = procura_user(id);
-
     if (u_interno != NULL){
         if(u_interno->cargo == cargo){
             return 1;
         }
     }
-
     return 0;
 }

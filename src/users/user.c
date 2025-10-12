@@ -36,10 +36,8 @@ void cadastrar_user(User *u){
 
 User* procura_user(int id){
     FILE *f = abrir_csv("users.csv", "r");
-    if ( ftell(f) == 0){
-        return NULL;
-    }
     char linha[256];
+    
     static User user;
     int id_lido, cargo_lido;
     char nome[50], senha[50];
