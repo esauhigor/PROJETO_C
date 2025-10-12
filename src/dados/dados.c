@@ -14,11 +14,5 @@ FILE* abrir_csv(const char* arquivo, const char* modo) {
         return NULL;
     }
 
-    //essa foi ideia do chat
-    // Só vai pro fim se o modo for de escrita ou leitura+escrita
-    if (strchr(modo, 'a') || strchr(modo, '+')) {
-        fseek(f, 0, SEEK_END);
-    }
-
     return f;
 }

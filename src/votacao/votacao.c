@@ -7,18 +7,23 @@
 #include "../users/user.h"
 #include "../utils/files/files.h"
 
-int verificar_votacao(){
+int verificar_votacao(int id){
 
-    /*
-    use a função "abrir_csv("votacao.csv", "r")" ela vai abrir um arquivo e retornar um FILE
+    FILE *f = abrir_csv("votacao.csv", "r");
+    char linha[256];
 
-    Essa função deve verificar se exite alguma votação em aberto, apartir de um id_hackathon que sera passado pra essa função e retornar 1 se true e 0 se false.
-    Essa função deve abrir o aquivo "votacao.csv" e ir de row em row até finazilar o arquivo, procurando o id_hackathon e verificar o control
+    while (fgets(linha, sizeof(linha), f)){
 
-    notas higor: use ponteiros, sempre chamee outras funções passando o ponteiro de alguma coisa
-
-    */
-   return 1;
+        int id_vot, id_hack, control;
+        if (sscanf(linha,"%d,%d,%d", &id_vot, &id_hack, &control) == 3 ){
+            if (id_hack==id && control == 1){
+            return 1;
+            }
+        }
+        
+    }
+    fclose(f);
+    return 0;
 
 }
 
@@ -35,17 +40,29 @@ int aderir_jurados(){
    return 1;
 }
 
-void abrir_votacao(){
+int abrir_votacao(Votacao *v){
+    
+    if (verificar_votacao(v->id_hack)){
+        return 0;
+    }
 
-    /*
-    use a função "abrir_csv("votacao.csv", "a")" ela vai abrir um arquivo e retornar um endereço de FILE
+    FILE *f = abrir_csv("votacao.csv", "a");
+    
+    if (ftell(f) == 0){
+        fprintf(f, "ID,ID_HACK,CONTROL,DATA,JURADOS\n");
+    }
+    int id = ultimo_id("votacao.csv") +1;
 
-    Função que cria uma nova linha no arquivo “dados/votacao.csv”, garantindo que não temos outra votação desse hackathon em aberto (Hackathon.control), se tiver erro, print uma descrição no terminal e retorne o id da votação em aberto.
+    if ( id < 0){
+        fclose(f);
+        return 0;
+    }
 
-    */
+    fprintf(f, "%d,%d,%d,%d,%d\n", id, v->id_hack, v->control, v->data, v->jurados);
 
     printf("Print teste: abrir_votacao()");
-
+    fclose(f);
+    return 1;
 }
 
 void aderir_pontos(){
