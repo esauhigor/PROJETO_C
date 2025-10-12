@@ -26,7 +26,7 @@ prepare:
 	@if not exist $(BUILD_DIR)\hackathons mkdir $(BUILD_DIR)\hackathons
 	@if not exist $(BUILD_DIR)\votacao mkdir $(BUILD_DIR)\votacao
 	@if not exist $(BUILD_DIR)\ultils mkdir $(BUILD_DIR)\ultils
-	@if not exist $(BUILD_DIR)\ultils\files mkdir $(BUILD_DIR)\ultils\files
+	@if not exist $(BUILD_DIR)\ultils\files mkdir $(BUILD_DIR)\utils\files
 
 # ==========================
 # Fontes e objetos
@@ -37,7 +37,7 @@ SRC = $(wildcard src/*.c) \
       $(wildcard src/equipes/*.c) \
       $(wildcard src/hackathons/*.c) \
       $(wildcard src/votacao/*.c) \
-      $(wildcard src/ultils/files/*.c)
+      $(wildcard src/utils/files/*.c)
 
 OBJ = $(patsubst src/%.c,$(BUILD_DIR)/%.o,$(SRC))
 
