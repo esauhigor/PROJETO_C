@@ -5,6 +5,7 @@
 #include "votacao.h"
 #include "../dados/dados.h"
 #include "../users/user.h"
+#include "../utils/files/files.h"
 
 int verificar_votacao(){
 
