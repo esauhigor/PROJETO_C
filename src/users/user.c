@@ -34,25 +34,33 @@ void cadastrar_user(User *u){
 
 }
 
-User* procuras_user(int id){
+User* procura_user(int id){
     FILE *f = abrir_csv("users.csv", "r");
-    User user = {-1};
-
     if ( ftell(f) == 0){
-        return;
+        return NULL;
     }
     char linha[256];
-    int id_retorno = -1;
+    static User user;
+    int id_lido, cargo_lido;
+    char nome[50], senha[50];
 
+    // Ignora o cabeçalho
     fgets(linha, sizeof(linha), f);
-    
-    while( fgets(linha, sizeof(linha), f) ){
-        linha[strcspn(linha, "\n")] = '\0';
-        int id;
-        if (sscanf(linha, "%d,", &id) == 1){
-            id_retorno = id;
+
+    while (fgets(linha, sizeof(linha), f)) {
+        // CSV: ID,NOME,CARGO,SENHA
+        if (sscanf(linha, "%d,%49[^,],%d,%49[^\n]", &id_lido, nome, &cargo_lido, senha) == 4) {
+            if (id_lido == id) {
+                user.id = id_lido;
+                strcpy(user.nome, nome);
+                user.cargo = int_pra_cargo(cargo_lido);
+                strcpy(user.senha, senha);
+                fclose(f);
+                return &user;
+            }
         }
     }
-    fclose(f);
 
+    fclose(f);
+    return NULL;
 }

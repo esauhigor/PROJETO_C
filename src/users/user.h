@@ -21,6 +21,8 @@ typedef struct {
 Cargo int_pra_cargo(int valor);
 const char* cargo_pra_texto(Cargo c);
 
+User* procura_user(int id);
+
 void cadastrar_user();
 void cifrar();
 

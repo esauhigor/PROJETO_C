@@ -25,10 +25,15 @@ int ultimo_id(const char *nome_arquivo){
     return ultimo;
 }
 
-int verifica_cargo(const char *nome_arquivo, User *u){
-    FILE *f = abrir_csv("users.csv", "r");
+int verifica_cargo(int id, Cargo cargo){
 
-    if(ftell(f) == 0){
+    User *u_interno = procura_user(id);
 
+    if (u_interno != NULL){
+        if(u_interno->cargo == cargo){
+            return 1;
+        }
     }
+
+    return 0;
 }
