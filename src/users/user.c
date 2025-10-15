@@ -17,6 +17,18 @@ Cargo int_pra_cargo(int valor) {
     }
 }
 
+Cargo cargo_pra_int(int valor) {
+    switch (valor) {
+        case 1: return ADMIN;
+        case 2: return GERENTE;
+        case 3: return PADRAO;
+        case 4: return MENTOR;
+        case 5: return JURADO;
+        case 6: return PARTICIPANTE;
+        default: return DESCONHECIDO;
+    }
+}
+
 const char* cargo_pra_texto(Cargo c) {
     switch (c) {
         case ADMIN: return "ADMIN";
@@ -29,10 +41,18 @@ const char* cargo_pra_texto(Cargo c) {
     }
 }
 
-void cadastrar_user(User *u){
+int cadastrar_user(User *u){
     FILE *f = abrir_csv("users.csv", "a");
 
+    if (f == NULL) return 0;
 
+    if(ftell(f) == 0) {
+        fprintf(f, "ID,NOME,CARGO,SENHA\n");
+    }
+
+    fprintf(f,"%d,%s,%d,%s",ultimo_id("users.csv")+1, u->nome, u->cargo,u->senha);
+
+    return 1;
 }
 
 User* procura_user(int id){
