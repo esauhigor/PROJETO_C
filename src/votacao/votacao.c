@@ -9,7 +9,7 @@
 
 int verificar_votacao(int id){
 
-    FILE *f = abrir_csv("votacao.csv", "r");
+    FILE *f = abrir_csv("votacao.csv");
     char linha[256];
 
     while (fgets(linha, sizeof(linha), f)){
@@ -46,11 +46,8 @@ int abrir_votacao(Votacao *v){
         return 0;
     }
 
-    FILE *f = abrir_csv("votacao.csv", "a");
-    
-    if (ftell(f) == 0){
-        fprintf(f, "ID,ID_HACK,CONTROL,DATA,JURADOS\n");
-    }
+    FILE *f = escrever_no_csv("votacao.csv", "ID,ID_HACK,CONTROL,DATA,JURADOS\n");
+
     int id = ultimo_id("votacao.csv") +1;
 
     if ( id < 0){

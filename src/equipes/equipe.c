@@ -59,17 +59,10 @@ void cadastrar_equipe(User *usuario_logado) {
     int ultimo = ultimo_id("equipes.csv");
     if (ultimo < 0) ultimo = 0;
 
-    FILE *f = abrir_csv("equipes.csv", "a+");
+    FILE *f = escrever_no_csv("equipes.csv", "ID,ID_HACKATHON,ID_MENTOR,NOME_EQUIPE\n");
     if (!f) {
         printf("Erro ao abrir o arquivo de equipes.\n");
         return;
-    }
-
-    // Adiciona cabeçalho se o arquivo estiver vazio
-    fseek(f, 0, SEEK_END);
-    long tamanho = ftell(f);
-    if (tamanho == 0) {
-        fprintf(f, "ID,ID_HACKATHON,ID_MENTOR,NOME_EQUIPE\n");
     }
 
     Equipe e;
@@ -135,7 +128,7 @@ void listar_equipes() {
 // Verifica se participante já está em alguma equipe
 // =====================================
 int participante_ja_vinculado(int id_user) {
-    FILE *f = abrir_csv("user_equipe.csv", "r");
+    FILE *f = abrir_csv("user_equipe.csv");
     if (!f) return 0; // se não existir ainda não tem ue kkk
 
     char linha[100];
@@ -182,17 +175,10 @@ void vincular_participante(User *usuario_logado) {
         return;
     }
 
-FILE *f = abrir_csv("user_equipe.csv", "a+");
+FILE *f = escrever_no_csv("user_equipe.csv", "ID_EQUIPE,ID_PARTICIPANTE\n");
 if (!f) {
     printf("Erro ao abrir user_equipe.csv\n");
     return;
-}
-
-// Verifica se o arquivo está vazio para inserir cabeçalho
-fseek(f, 0, SEEK_END);
-long tamanho = ftell(f);
-if (tamanho == 0) {
-    fprintf(f, "id_equipe,id_participante\n");
 }
 
 fprintf(f, "%d,%d\n", id_equipe, id_user);
@@ -205,7 +191,7 @@ printf("Participante %d vinculado com sucesso à equipe %d!\n", id_user, id_equi
 // Verifica duplicidade de equipe
 // =====================================
     int equipe_ja_existe(const char *nome) {
-        FILE *f = abrir_csv("equipes.csv", "r");
+        FILE *f = abrir_csv("equipes.csv");
         if (!f) return 0; // se não existir o arquivo não tem duplicidade
 
         char linha[256];

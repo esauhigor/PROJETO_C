@@ -42,7 +42,7 @@ const char* cargo_pra_texto(Cargo c) {
 }
 
 int cadastrar_user(User *u){
-    FILE *f = abrir_csv("users.csv", "a", "ID,NOME,CARGO,SENHA\n");
+    FILE *f = escrever_no_csv("users.csv", "ID,NOME,CARGO,SENHA\n");
 
     if (f == NULL) return 0;
 
@@ -53,7 +53,7 @@ int cadastrar_user(User *u){
 }
 
 User* procura_user(int id){
-    FILE *f = abrir_csv("users.csv", "r", "ID,NOME,CARGO,SENHA\n");
+    FILE *f = abrir_csv("users.csv");
     char linha[256];
     
     static User user;
