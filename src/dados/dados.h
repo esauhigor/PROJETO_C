@@ -3,6 +3,6 @@
 
 #include <stdio.h>
 
-FILE* abrir_csv(const char* arquivo, const char* modo);
+FILE* abrir_csv(const char* arquivo, const char* modo, const char* header);
 
 #endif

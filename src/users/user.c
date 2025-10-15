@@ -42,21 +42,18 @@ const char* cargo_pra_texto(Cargo c) {
 }
 
 int cadastrar_user(User *u){
-    FILE *f = abrir_csv("users.csv", "a");
+    FILE *f = abrir_csv("users.csv", "a", "ID,NOME,CARGO,SENHA\n");
 
     if (f == NULL) return 0;
 
-    if(ftell(f) == 0) {
-        fprintf(f, "ID,NOME,CARGO,SENHA\n");
-    }
+    fprintf(f,"%d,%s,%d,%s\n",ultimo_id("users.csv")+1, u->nome, u->cargo,u->senha);
 
-    fprintf(f,"%d,%s,%d,%s",ultimo_id("users.csv")+1, u->nome, u->cargo,u->senha);
-
+    fclose(f);
     return 1;
 }
 
 User* procura_user(int id){
-    FILE *f = abrir_csv("users.csv", "r");
+    FILE *f = abrir_csv("users.csv", "r", "ID,NOME,CARGO,SENHA\n");
     char linha[256];
     
     static User user;
