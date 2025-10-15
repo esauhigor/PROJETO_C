@@ -41,7 +41,16 @@ const char* cargo_pra_texto(Cargo c) {
     }
 }
 
-int cadastrar_user(User *u){
+int cadastrar_user(){
+    User u;
+    printf("Qual é o seu nome?\n");
+
+
+    insert_user(&u);
+
+}
+
+int insert_user(User *u){
     FILE *f = escrever_no_csv("users.csv", "ID,NOME,CARGO,SENHA\n");
 
     if (f == NULL) return 0;

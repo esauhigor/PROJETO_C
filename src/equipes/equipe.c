@@ -50,23 +50,19 @@ void menu_equipes(User *usuario_logado) {
 // ==============================
 // CADASTRAR NOVA EQUIPE
 // ==============================
-void cadastrar_equipe(User *usuario_logado) {
+int cadastrar_equipe(User *usuario_logado) {
     if (!(usuario_logado->cargo == ADMIN || usuario_logado->cargo == GERENTE)) {
         printf("Acesso negado! Apenas ADMIN e GERENTE podem cadastrar equipes.\n");
-        return;
+        return 0;
     }
 
-    int ultimo = ultimo_id("equipes.csv");
-    if (ultimo < 0) ultimo = 0;
+    
 
     FILE *f = escrever_no_csv("equipes.csv", "ID,ID_HACKATHON,ID_MENTOR,NOME_EQUIPE\n");
     if (!f) {
         printf("Erro ao abrir o arquivo de equipes.\n");
-        return;
+        return 0;
     }
-
-    Equipe e;
-    e.id = ultimo + 1;
 
     printf("\nDigite o nome da equipe: ");
     fgets(e.nome, sizeof(e.nome), stdin);
@@ -75,7 +71,7 @@ void cadastrar_equipe(User *usuario_logado) {
     if (equipe_ja_existe(e.nome)) {
         printf("Erro: já existe uma equipe com o nome '%s'.\n", e.nome);
         fclose(f);
-        return;
+        return 0;
     }
 
     printf("Digite o ID do hackathon: ");
@@ -89,10 +85,12 @@ void cadastrar_equipe(User *usuario_logado) {
     if (!verifica_cargo(e.id_mentor, MENTOR)) {
         printf("Erro: o ID %d não corresponde a um mentor válido.\n", e.id_mentor);
         fclose(f);
-        return;
+        return 0;
     }
+    int ultimo = ultimo_id("equipes.csv") +1;
+    if (ultimo < 0) return 0;
 
-    fprintf(f, "%d,%d,%d,%s\n", e.id, e.id_hack, e.id_mentor, e.nome);
+    fprintf(f, "%d,%d,%d,%s\n", ultimo, e.id_hack, e.id_mentor, e.nome);
     fclose(f);
 
     printf("Equipe '%s' cadastrada com sucesso! (ID: %d)\n", e.nome, e.id);
