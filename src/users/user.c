@@ -3,6 +3,7 @@
 #include "../utils/files/files.h"
 
 #include <stdio.h>
+#include <string.h>
 
 Cargo int_pra_cargo(int valor) {
     switch (valor) {
