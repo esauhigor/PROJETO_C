@@ -34,3 +34,32 @@ int verifica_cargo(int id, Cargo cargo){
     }
     return 0;
 }
+
+void trocar(int *a, int *b){
+    int temp = *a;
+    *a = *b;
+    *b = temp;
+}
+
+int particionar(int *lista[], int inicio, int fim){
+    int pivo = *lista[fim];
+    int i = inicio - 1;
+
+    for (int j = inicio ; j<fim ; j++){
+        if (*lista[j]< pivo){
+            i++;
+            trocar(lista[j], lista[i]);
+        }
+    }
+    i++;
+    trocar(lista[fim], lista[i]);
+    return i;
+}
+
+void quicksort(int *lista[], int inicio, int fim){
+    if(inicio >= fim) return;
+    
+    int indicePivo = particionar(lista, inicio, fim);
+    quicksort(lista, inicio, indicePivo-1);
+    quicksort(lista, indicePivo+1, fim);
+}
