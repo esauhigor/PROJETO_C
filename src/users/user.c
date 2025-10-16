@@ -124,9 +124,9 @@ void singin() {
     e.cargo = PADRAO;
 
     if (cadastrar_user(&e)) {
-        printf("✅ Cadastrado com sucesso!\n");
+        printf("Cadastrado com sucesso!\n");
     } else {
-        printf("❌ Erro ao cadastrar.\n");
+        printf("Erro ao cadastrar.\n");
     }
 
     printf("Usuário criado: %s (%s)\n", e.nome, cargo_pra_texto(e.cargo));
@@ -170,4 +170,43 @@ User* procura_user(int id){
 
     fclose(f);
     return NULL;
+}
+
+User* lista_users_por_cargo(Cargo cargo, int *quantidade) {
+    FILE *f = abrir_csv("users.csv");
+    if (!f) return NULL;
+
+    char linha[256];
+    *quantidade = 0;
+
+    User *lista = malloc(sizeof(User) * 1); // começa com 1, vai realocando
+
+    // Ignora cabeçalho
+    fgets(linha, sizeof(linha), f);
+
+    while (fgets(linha, sizeof(linha), f)) {
+        int id_lido, cargo_lido;
+        char nome[50], senha[50];
+
+        if (sscanf(linha, "%d,%49[^,],%d,%49[^\n]", &id_lido, nome, &cargo_lido, senha) == 4) {
+            if (int_pra_cargo(cargo_lido) == cargo) {
+                // realoca array para mais 1 usuário
+                lista = realloc(lista, sizeof(User) * (*quantidade + 1));
+                lista[*quantidade].id = id_lido;
+                strcpy(lista[*quantidade].nome, nome);
+                lista[*quantidade].cargo = int_pra_cargo(cargo_lido);
+                strcpy(lista[*quantidade].senha, senha);
+                (*quantidade)++;
+            }
+        }
+    }
+
+    fclose(f);
+
+    if (*quantidade == 0) {
+        free(lista);
+        return NULL;
+    }
+
+    return lista;
 }
