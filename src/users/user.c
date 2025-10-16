@@ -65,6 +65,34 @@ int validar_username(const char *username) {
     return 1; // válido
 }
 
+int validar_senha(const char *senha) {
+    int len = strlen(senha);
+    int tem_letra = 0, tem_numero = 0, tem_especial = 0;
+
+    // comprimento mínimo e máximo
+    if (len < MIN_SENHA_LEN || len > MAX_SENHA_LEN) {
+        printf("A senha deve ter entre %d e %d caracteres.\n", MIN_SENHA_LEN, MAX_SENHA_LEN);
+        return 0;
+    }
+
+    for (int i = 0; i < len; i++) {
+        if (isalpha(senha[i])) tem_letra = 1;
+        else if (isdigit(senha[i])) tem_numero = 1;
+        else if (strchr("!@#$%&*_-+=?.", senha[i])) tem_especial = 1; // caracteres especiais permitidos
+        else {
+            printf("Caractere inválido: '%c'\n", senha[i]);
+            return 0;
+        }
+    }
+
+    if (!tem_letra || !tem_numero || !tem_especial) {
+        printf("A senha deve conter pelo menos uma letra, um numero e um caractere especial (!@#$%%&*_-+=.?).\n");
+        return 0;
+    }
+
+    return 1; // válida
+}
+
 void singin() {
     User e;
 
@@ -79,9 +107,15 @@ void singin() {
     }
 
     // Leitura da senha
+    while(1){
     printf("Senha: ");
     fgets(e.senha, sizeof(e.senha), stdin);
     e.senha[strcspn(e.senha, "\n")] = '\0';
+
+    if (validar_senha(e.senha)) break; // válido -> sai do loop
+        printf("Tente novamente.\n\n");
+    }
+
 
     e.cargo = PADRAO;
 
