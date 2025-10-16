@@ -6,7 +6,7 @@
 
 int ultimo_id(const char *nome_arquivo){
 
-    FILE *f = abrir_csv(nome_arquivo, "r");
+    FILE *f = abrir_csv(nome_arquivo);
     if (!f) return -2;
 
     char linha[256];
