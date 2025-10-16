@@ -4,6 +4,7 @@
 
 #include <stdio.h>
 #include <string.h>
+#include <ctype.h>
 
 #define MIN_USERNAME_LEN 3
 #define MAX_USERNAME_LEN 20
