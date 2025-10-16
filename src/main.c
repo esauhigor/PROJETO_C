@@ -45,7 +45,7 @@ User* simular_login() {
 // FUNÇÃO PRINCIPAL
 // =====================================
 int main() {
-    printf("===== SISTEMA DE HACKATHON =====\n");
+    /*printf("===== SISTEMA DE HACKATHON =====\n");
 
     User *usuario_logado = simular_login();
 
@@ -73,7 +73,8 @@ int main() {
                 printf("Opção inválida!\n");
         }
 
-    } while (opcao != 2);
+    } while (opcao != 2);*/
 
+    sigin();
     return 0;
 }

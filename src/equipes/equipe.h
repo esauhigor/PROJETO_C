@@ -13,7 +13,7 @@ typedef struct {
 
 // Funções principais
 void menu_equipes(User *usuario_logado);// Menu geral de equipes
-void cadastrar_equipe(User *usuario_logado);// Cadastrar nova equipe
+int cadastrar_equipe(User *usuario_logado);// Cadastrar nova equipe
 void listar_equipes();// Listar todas as equipes
 void vincular_participante(User *usuario_logado);// Vincular participante a uma equipe existente
 int participante_ja_vinculado(int id_user);// Verificar se participante já está em alguma equipe

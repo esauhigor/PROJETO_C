@@ -24,8 +24,10 @@ const char* cargo_pra_texto(Cargo c);
 User* procura_user(int id);
 // essa função retorna NULL quando da erro
 
-int insert_user(User *u);
+int cadastrar_user(User *u);
 //essa função retorna 0 quando da erro
+
+void sigin();
 
 void cifrar();
 

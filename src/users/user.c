@@ -5,6 +5,9 @@
 #include <stdio.h>
 #include <string.h>
 
+#define MIN_USERNAME_LEN 3
+#define MAX_USERNAME_LEN 20
+
 Cargo int_pra_cargo(int valor) {
     switch (valor) {
         case 1: return ADMIN;
@@ -41,16 +44,57 @@ const char* cargo_pra_texto(Cargo c) {
     }
 }
 
-int cadastrar_user(){
-    User u;
-    printf("Qual é o seu nome?\n");
+int validar_username(const char *username) {
+    int len = strlen(username);
 
+    // comprimento mínimo e máximo
+    if (len < MIN_USERNAME_LEN || len > MAX_USERNAME_LEN) {
+        printf("O username deve ter entre %d e %d caracteres.\n",
+               MIN_USERNAME_LEN, MAX_USERNAME_LEN);
+        return 0;
+    }
 
-    insert_user(&u);
+    // só permite letras, números e _
+    for (int i = 0; i < len; i++) {
+        if (!isalnum(username[i]) && username[i] != '_') {
+            printf("O username só pode conter letras, números ou '_'.\n");
+            return 0;
+        }
+    }
 
+    return 1; // válido
 }
 
-int insert_user(User *u){
+void sigin() {
+    User e;
+
+    // Leitura e validação do username
+    while (1) {
+        printf("Username: ");
+        fgets(e.nome, sizeof(e.nome), stdin);
+        e.nome[strcspn(e.nome, "\n")] = '\0';
+
+        if (validar_username(e.nome)) break; // válido -> sai do loop
+        printf("Tente novamente.\n\n");
+    }
+
+    // Leitura da senha
+    printf("Senha: ");
+    fgets(e.senha, sizeof(e.senha), stdin);
+    e.senha[strcspn(e.senha, "\n")] = '\0';
+
+    e.cargo = PADRAO;
+
+    if (cadastrar_user(&e)) {
+        printf("✅ Cadastrado com sucesso!\n");
+    } else {
+        printf("❌ Erro ao cadastrar.\n");
+    }
+
+    printf("Usuário criado: %s (%s)\n", e.nome, cargo_pra_texto(e.cargo));
+}
+
+int cadastrar_user(User *u){
     FILE *f = escrever_no_csv("users.csv", "ID,NOME,CARGO,SENHA\n");
 
     if (f == NULL) return 0;

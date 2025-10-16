@@ -56,8 +56,8 @@ int cadastrar_equipe(User *usuario_logado) {
         return 0;
     }
 
+    Equipe e;
     
-
     FILE *f = escrever_no_csv("equipes.csv", "ID,ID_HACKATHON,ID_MENTOR,NOME_EQUIPE\n");
     if (!f) {
         printf("Erro ao abrir o arquivo de equipes.\n");
