@@ -5,7 +5,7 @@
 #include "users/user.h"
 
 int main() {
-    int qtd;
+    /*int qtd;
     User *admins = lista_users_por_cargo(PADRAO, &qtd);
 
     if (!admins) {
@@ -18,9 +18,9 @@ int main() {
         printf("ID: %d, Nome: %s\n", admins[i].id, admins[i].nome);
     }
 
-    free(admins); // sempre liberar memória
+    free(admins); // sempre liberar memória*/
 
-    //singin();
+    singin();
     
     return 0;
 }

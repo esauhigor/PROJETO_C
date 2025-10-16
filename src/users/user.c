@@ -12,6 +12,9 @@
 #define MIN_SENHA_LEN 6
 #define MAX_SENHA_LEN 20
 
+#define SHIFT_LETRA 3
+#define SHIFT_NUMERO 4
+
 Cargo int_pra_cargo(int valor) {
     switch (valor) {
         case 1: return ADMIN;
@@ -97,6 +100,30 @@ int validar_senha(const char *senha) {
     return 1; // válida
 }
 
+void cifra_idiota(char *senha) {
+    while (*senha != '\0') {
+        char c = *senha;
+
+        if (isalpha(c)) {
+            if (isupper(c))
+                *senha = ((c - 'A' + SHIFT_LETRA) % 26) + 'A';
+            else
+                *senha = ((c - 'a' + SHIFT_LETRA) % 26) + 'a';
+        }
+        else if (isdigit(c)) {
+            *senha = ((c - '0' + SHIFT_NUMERO) % 10) + '0';
+        }
+        else if (strchr("!@#$%&*_-+=?.", c)) {
+            const char *especial = "!@#$%&*_-+=?.";
+            int len = strlen(especial);
+            const char *pos = strchr(especial, c);
+            if (pos)
+                *senha = especial[(pos - especial + 2) % len];
+        }
+        senha++;
+    }
+}
+
 void singin() {
     User e;
 
@@ -119,7 +146,8 @@ void singin() {
     if (validar_senha(e.senha)) break; // válido -> sai do loop
         printf("Tente novamente.\n\n");
     }
-
+    
+    cifra_idiota(&e.senha);
 
     e.cargo = PADRAO;
 
