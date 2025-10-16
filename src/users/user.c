@@ -8,6 +8,9 @@
 #define MIN_USERNAME_LEN 3
 #define MAX_USERNAME_LEN 20
 
+#define MIN_SENHA_LEN 6
+#define MAX_SENHA_LEN 20
+
 Cargo int_pra_cargo(int valor) {
     switch (valor) {
         case 1: return ADMIN;
