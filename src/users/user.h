@@ -27,7 +27,7 @@ User* procura_user(int id);
 int cadastrar_user(User *u);
 //essa função retorna 0 quando da erro
 
-void sigin();
+void singin();
 
 void cifrar();
 

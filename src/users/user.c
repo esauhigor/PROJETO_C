@@ -65,7 +65,7 @@ int validar_username(const char *username) {
     return 1; // válido
 }
 
-void sigin() {
+void singin() {
     User e;
 
     // Leitura e validação do username
