@@ -3,7 +3,7 @@
 
 #include <stdio.h>
 
-FILE* abrir_csv(const char* arquivo);
+FILE* abrir_csv(const char* arquivo, const char* modo);
 FILE* escrever_no_csv(const char* arquivo, const char* header);
 
 #endif

@@ -37,6 +37,7 @@ void cifrar();
 
 int autenticar();
 void login();
+void cifra_idiota(char *senha);
 
 
 

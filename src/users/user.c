@@ -5,6 +5,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <ctype.h>
+#include <stdlib.h>
 
 #define MIN_USERNAME_LEN 3
 #define MAX_USERNAME_LEN 20
@@ -62,7 +63,8 @@ int validar_username(const char *username) {
     }
 
     // só permite letras, números e _
-    for (int i = 0; i < len; i++) {
+    int i;
+    for (i = 0; i < len; i++) {
         if (!isalnum(username[i]) && username[i] != '_') {
             printf("O username só pode conter letras, números ou '_'.\n");
             return 0;
@@ -82,7 +84,8 @@ int validar_senha(const char *senha) {
         return 0;
     }
 
-    for (int i = 0; i < len; i++) {
+    int i;
+    for (i = 0; i < len; i++) {
         if (isalpha(senha[i])) tem_letra = 1;
         else if (isdigit(senha[i])) tem_numero = 1;
         else if (strchr("!@#$%&*_-+=?.", senha[i])) tem_especial = 1; // caracteres especiais permitidos

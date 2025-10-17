@@ -1,26 +1,27 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
-
+#include <locale.h>
 #include "users/user.h"
+#include "equipes/equipe.h"
 
+// Função principal
 int main() {
-    /*int qtd;
-    User *admins = lista_users_por_cargo(PADRAO, &qtd);
+    setlocale(LC_ALL, "Portuguese"); // acentos no terminal
 
-    if (!admins) {
-        printf("Nenhum usuário encontrado.\n");
-        return 0;
-    }
+    // Cria um usuário logado fictício (ADMIN)
+    User usuario_logado;
+    usuario_logado.id = 1;
+    usuario_logado.cargo = ADMIN;
+    snprintf(usuario_logado.nome, sizeof(usuario_logado.nome), "Administrador");
 
-    printf("Usuários com cargo ADMIN:\n");
-    for (int i = 0; i < qtd; i++) {
-        printf("ID: %d, Nome: %s\n", admins[i].id, admins[i].nome);
-    }
+    printf("========================================\n");
+    printf(" SISTEMA DE GESTÃO DE EQUIPES - TESTE \n");
+    printf(" Usuário logado: %s (Cargo: ADMIN)\n", usuario_logado.nome);
+    printf("========================================\n");
 
-    free(admins); // sempre liberar memória*/
+    // Chama o menu principal de equipes
+    menu_equipes(&usuario_logado);
 
-    singin();
-
+    printf("\nEncerrando o programa...\n");
     return 0;
 }
