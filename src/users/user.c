@@ -4,6 +4,7 @@
 
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
 #include <ctype.h>
 
 #define MIN_USERNAME_LEN 3
@@ -124,6 +125,34 @@ void cifra_idiota(char *senha) {
     }
 }
 
+int existe_nome(const char *username){
+    FILE *f = abrir_csv("users.csv");
+    char linha[256];
+
+    if (!f){
+        return -1;
+    }
+    
+    int id_lido;
+    char nome[50];
+
+    // Ignora o cabeçalho
+    fgets(linha, sizeof(linha), f);
+
+    while (fgets(linha, sizeof(linha), f)) {
+        // CSV: ID,NOME,CARGO,SENHA
+        if (sscanf(linha, "%d,%49[^,],", &id_lido, nome) == 2) {
+            if (strcmp(username, nome) == 0) {
+                fclose(f);
+                return 1;
+            }
+        }
+    }
+
+    fclose(f);
+    return 0;
+}
+
 void singin() {
     User e;
 
@@ -147,24 +176,29 @@ void singin() {
         printf("Tente novamente.\n\n");
     }
     
-    cifra_idiota(&e.senha);
+    cifra_idiota(e.senha);
 
     e.cargo = PADRAO;
 
     if (cadastrar_user(&e)) {
-        printf("Cadastrado com sucesso!\n");
+        printf("Usuário criado: %s (%s)\n", e.nome, cargo_pra_texto(e.cargo));
     } else {
         printf("Erro ao cadastrar.\n");
     }
 
-    printf("Usuário criado: %s (%s)\n", e.nome, cargo_pra_texto(e.cargo));
+    
 }
 
 
 int cadastrar_user(User *u){
     FILE *f = escrever_no_csv("users.csv", "ID,NOME,CARGO,SENHA\n");
 
-    if (f == NULL) return 0;
+    if (f == NULL) return -1;
+
+    if (existe_nome((u->nome))) {
+        printf("Username já está em uso!\n");
+        return 0;
+    }
 
     fprintf(f,"%d,%s,%d,%s\n",ultimo_id("users.csv")+1, u->nome, u->cargo,u->senha);
 
@@ -201,33 +235,7 @@ User* procura_user(int id){
     return NULL;
 }
 
-int existe_nome(const char *username){
-    FILE *f = abrir_csv("users.csv");
-    char linha[256];
 
-    if (!f){
-        return -1;
-    }
-    
-    int id_lido;
-    char nome[50];
-
-    // Ignora o cabeçalho
-    fgets(linha, sizeof(linha), f);
-
-    while (fgets(linha, sizeof(linha), f)) {
-        // CSV: ID,NOME,CARGO,SENHA
-        if (sscanf(linha, "%d,%49[^,],", &id_lido, &nome) == 2) {
-            if (strcmp(username, nome) == 0) {
-                fclose(f);
-                return 1;
-            }
-        }
-    }
-
-    fclose(f);
-    return 0;
-}
 
 User* lista_users_por_cargo(Cargo cargo, int *quantidade) {
     FILE *f = abrir_csv("users.csv");

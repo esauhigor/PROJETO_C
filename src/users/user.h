@@ -36,6 +36,8 @@ int cadastrar_user(User *u);
 void singin();
 // fluxo de cadastro de user
 
+int existe_nome(const char *username);
+
 void cifrar();
 
 int autenticar();
