@@ -150,7 +150,7 @@ void singin() {
         printf("Tente novamente.\n\n");
     }
     
-    cifra_idiota(&e.senha);
+    cifra_idiota(e.senha);
 
     e.cargo = PADRAO;
 
@@ -175,7 +175,7 @@ int cadastrar_user(User *u){
 }
 
 User* procura_user(int id){
-    FILE *f = abrir_csv("users.csv");
+    FILE *f = abrir_csv("users.csv", "r");
     char linha[256];
     
     static User user;
@@ -204,7 +204,7 @@ User* procura_user(int id){
 }
 
 User* lista_users_por_cargo(Cargo cargo, int *quantidade) {
-    FILE *f = abrir_csv("users.csv");
+    FILE *f = abrir_csv("users.csv", "r");
     if (!f) return NULL;
 
     char linha[256];

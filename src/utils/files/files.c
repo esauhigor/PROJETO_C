@@ -45,7 +45,8 @@ int particionar(int *lista[], int inicio, int fim){
     int pivo = *lista[fim];
     int i = inicio - 1;
 
-    for (int j = inicio ; j<fim ; j++){
+    int j;
+    for (j = inicio; j < fim; j++) {
         if (*lista[j]< pivo){
             i++;
             trocar(lista[j], lista[i]);
