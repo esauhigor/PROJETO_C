@@ -240,7 +240,6 @@ User* procura_user(int id){
 }
 
 
-
 User* lista_users_por_cargo(Cargo cargo, int *quantidade) {
     FILE *f = abrir_csv("users.csv");
     if (!f) return NULL;
