@@ -1,12 +1,10 @@
 # ==========================
 # Makefile para PROJETO_C
-# Compatível com Windows (PowerShell / CMD)
+# Compatível com Windows (CMD / PowerShell)
 # ==========================
 
 # Compilador
 CC = gcc
-
-# Flags de compilação
 CFLAGS = -Wall -g
 
 # Pasta de build
@@ -16,17 +14,9 @@ BUILD_DIR = build
 TARGET = programa.exe
 
 # ==========================
-# Preparação das pastas
+# Subpastas do projeto
 # ==========================
-prepare:
-	@if not exist $(BUILD_DIR) mkdir $(BUILD_DIR)
-	@if not exist $(BUILD_DIR)\dados mkdir $(BUILD_DIR)\dados
-	@if not exist $(BUILD_DIR)\users mkdir $(BUILD_DIR)\users
-	@if not exist $(BUILD_DIR)\equipes mkdir $(BUILD_DIR)\equipes
-	@if not exist $(BUILD_DIR)\hackathons mkdir $(BUILD_DIR)\hackathons
-	@if not exist $(BUILD_DIR)\votacao mkdir $(BUILD_DIR)\votacao
-	@if not exist $(BUILD_DIR)\utils mkdir $(BUILD_DIR)\utils
-	@if not exist $(BUILD_DIR)\utils\files mkdir $(BUILD_DIR)\utils\files
+DIRS = dados users equipes hackathons votacao utils/files utils/result
 
 # ==========================
 # Fontes e objetos
@@ -37,7 +27,8 @@ SRC = $(wildcard src/*.c) \
       $(wildcard src/equipes/*.c) \
       $(wildcard src/hackathons/*.c) \
       $(wildcard src/votacao/*.c) \
-      $(wildcard src/utils/files/*.c)
+      $(wildcard src/utils/files/*.c) \
+      $(wildcard src/utils/result/*.c)
 
 OBJ = $(patsubst src/%.c,$(BUILD_DIR)/%.o,$(SRC))
 
@@ -60,12 +51,18 @@ $(BUILD_DIR)/%.o: src/%.c
 	$(CC) $(CFLAGS) -c $< -o $@
 
 # ==========================
+# Preparação das pastas
+# ==========================
+prepare:
+	@if not exist $(BUILD_DIR) mkdir $(BUILD_DIR)
+	@for %%d in ($(DIRS)) do if not exist $(BUILD_DIR)\%%d mkdir $(BUILD_DIR)\%%d
+
+# ==========================
 # Limpeza
 # ==========================
 clean:
-	del /Q $(BUILD_DIR)\*.o 2>nul
-	del /S /Q $(BUILD_DIR)\* 2>nul
-	if exist $(TARGET) del $(TARGET)
+	@if exist $(BUILD_DIR) rd /S /Q $(BUILD_DIR)
+	@if exist $(TARGET) del $(TARGET)
 
 # ==========================
 # Executar o programa
