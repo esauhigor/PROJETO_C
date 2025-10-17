@@ -1,6 +1,7 @@
 #include "user.h"
 #include "../dados/dados.h"
 #include "../utils/files/files.h"
+#include "../utils/result/result.h"
 
 #include <stdio.h>
 #include <string.h>
@@ -180,30 +181,30 @@ void singin() {
 
     e.cargo = PADRAO;
 
-    if (cadastrar_user(&e)) {
+    Result r = cadastrar_user(&e);
+
+    if (r.code == ok) {
         printf("Usuário criado: %s (%s)\n", e.nome, cargo_pra_texto(e.cargo));
     } else {
-        printf("Erro ao cadastrar.\n");
+        print_err(&r);
     }
 
     
 }
 
-
-int cadastrar_user(User *u){
+Result cadastrar_user(User *u){
     FILE *f = escrever_no_csv("users.csv", "ID,NOME,CARGO,SENHA\n");
 
-    if (f == NULL) return -1;
+    if (f == NULL) return erro(ERRO_ARQUIVO, "erro ao abrir o arquivo users.csv");
 
     if (existe_nome((u->nome))) {
-        printf("Username já está em uso!\n");
-        return 0;
+        return erro(ERRO_LOGICA, "Username ja esta em uso!");
     }
 
     fprintf(f,"%d,%s,%d,%s\n",ultimo_id("users.csv")+1, u->nome, u->cargo,u->senha);
 
     fclose(f);
-    return 1;
+    return ok();
 }
 
 User* procura_user(int id){

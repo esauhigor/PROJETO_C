@@ -1,6 +1,8 @@
 #ifndef USERS_H
 #define USERS_H
 
+#include "../utils/result/result.h"
+
 typedef enum {
     ADMIN = 1,
     GERENTE = 2,
@@ -30,7 +32,7 @@ User* procura_user_por_nome(const char *nome_busca);
 User* lista_users_por_cargo(Cargo cargo, int *quantidade);
 // retorna um ponteiro do inicio da array e NULL se erro, lembrar de liberar memoria após o fim do uso.(free(nome_da_variavel))
 
-int cadastrar_user(User *u);
+Result cadastrar_user(User *u);
 //essa função retorna 0 quando da erro
 
 void singin();
