@@ -186,7 +186,7 @@ void singin() {
 
     Result r = cadastrar_user(&e);
 
-    if (r.code == ok) {
+    if (r.code == OK) {
         printf("Usuário criado: %s (%s)\n", e.nome, cargo_pra_texto(e.cargo));
     } else {
         print_err(&r);
