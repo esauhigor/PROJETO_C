@@ -239,6 +239,3 @@ User* lista_users_por_cargo(Cargo cargo, int *quantidade) {
     return lista;
 }
 
-void printU(){
-    printf("Print\n\n");
-}
