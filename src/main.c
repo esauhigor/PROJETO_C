@@ -20,7 +20,10 @@ int main() {
 
     free(admins); // sempre liberar memória*/
 
-    singin();
+    const char nome[] = "higor";
+    printf("%s: %d", nome , existe_nome(&nome));
+
+    //singin();
 
     return 0;
 }

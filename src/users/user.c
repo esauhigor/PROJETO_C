@@ -160,6 +160,7 @@ void singin() {
     printf("Usuário criado: %s (%s)\n", e.nome, cargo_pra_texto(e.cargo));
 }
 
+
 int cadastrar_user(User *u){
     FILE *f = escrever_no_csv("users.csv", "ID,NOME,CARGO,SENHA\n");
 
@@ -200,6 +201,34 @@ User* procura_user(int id){
     return NULL;
 }
 
+int existe_nome(const char *username){
+    FILE *f = abrir_csv("users.csv");
+    char linha[256];
+
+    if (!f){
+        return -1;
+    }
+    
+    int id_lido;
+    char nome[50];
+
+    // Ignora o cabeçalho
+    fgets(linha, sizeof(linha), f);
+
+    while (fgets(linha, sizeof(linha), f)) {
+        // CSV: ID,NOME,CARGO,SENHA
+        if (sscanf(linha, "%d,%49[^,],", &id_lido, &nome) == 2) {
+            if (strcmp(username, nome) == 0) {
+                fclose(f);
+                return 1;
+            }
+        }
+    }
+
+    fclose(f);
+    return 0;
+}
+
 User* lista_users_por_cargo(Cargo cargo, int *quantidade) {
     FILE *f = abrir_csv("users.csv");
     if (!f) return NULL;
@@ -238,4 +267,5 @@ User* lista_users_por_cargo(Cargo cargo, int *quantidade) {
 
     return lista;
 }
+
 

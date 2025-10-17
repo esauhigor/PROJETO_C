@@ -24,6 +24,9 @@ const char* cargo_pra_texto(Cargo c);
 User* procura_user(int id);
 // essa função retorna NULL quando da erro
 
+User* procura_user_por_nome(const char *nome_busca);
+// recebe um username e procura o usuario em questão;
+
 User* lista_users_por_cargo(Cargo cargo, int *quantidade);
 // retorna um ponteiro do inicio da array e NULL se erro, lembrar de liberar memoria após o fim do uso.(free(nome_da_variavel))
 
