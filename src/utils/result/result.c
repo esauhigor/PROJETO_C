@@ -7,13 +7,18 @@
 // ==========================================================
 
 // Retorno de sucesso (sem mensagem)
-Result ok(void) {
-    return (Result){ OK, NULL };
+Result ok() {
+    return (Result){ OK, NULL, NULL};
 }
+
+Result ok_data(void *data){
+    return (Result){ OK, NULL, data};
+}
+
 
 // Retorno de erro com código e mensagem
 Result erro(Res code, const char *msg) {
-    return (Result){ code, msg };
+    return (Result){ code, msg, NULL};
 }
 
 // Imprime o erro no terminal

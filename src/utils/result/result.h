@@ -11,12 +11,16 @@ typedef enum {
 } Res;
 
 typedef struct {
-    Res code;
-    const char *msg;
+    Res code;       // Código de retorno
+    const char *msg; // Mensagem de erro
+    void *data;     // Dados opcionais
 } Result;
 
 // Retorno de sucesso (sem mensagem)
-Result ok(void);
+Result ok();
+
+// Retorno de sucesso (com dados)
+Result ok_data(void *data);
 
 // Retorno de erro com código e mensagem
 Result erro(Res code, const char *msg);

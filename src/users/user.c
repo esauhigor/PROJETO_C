@@ -129,12 +129,12 @@ void cifra_idiota(char *senha) {
     }
 }
 
-int existe_nome(const char *username){
+Result existe_nome(const char *username){
     FILE *f = abrir_csv("users.csv");
     char linha[256];
 
     if (!f){
-        return -1;
+        return erro(ERRO_ARQUIVO, "Erro ao abrir o arquivo users.csv!\n");
     }
     
     int id_lido;
@@ -148,13 +148,13 @@ int existe_nome(const char *username){
         if (sscanf(linha, "%d,%49[^,],", &id_lido, nome) == 2) {
             if (strcmp(username, nome) == 0) {
                 fclose(f);
-                return 1;
+                return ok();
             }
         }
     }
 
     fclose(f);
-    return 0;
+    return erro(ERRO_LOGICA, "Usuario não existe\n");
 }
 
 void singin() {
@@ -182,8 +182,6 @@ void singin() {
     
     cifra_idiota(e.senha);
 
-    e.cargo = PADRAO;
-
     Result r = cadastrar_user(&e);
 
     if (r.code == OK) {
@@ -195,23 +193,62 @@ void singin() {
     
 }
 
+Result autenticar(const char *username, char *senha){
+    FILE *f = abrir_csv("users.csv");
+
+    if (!f){
+        return erro(ERRO_ARQUIVO, "Erro ao abrir o arquivo users.csv!\n");
+    }
+    char linha[256];
+    User *u = {0};
+
+    // Ignora o cabeçalho
+    fgets(linha, sizeof(linha), f);
+
+    while (fgets(linha, sizeof(linha), f)) {
+        if (sscanf(linha, "%d,%49[^,],%d,%49[^\n]", &u->id, u->nome, &u->cargo, u->senha) == 4) {
+            if (strcmp(username, u->nome) == 0) {
+                fclose(f);
+                cifra_idiota(senha);
+                if (strcmp(u->senha, senha) != 0){
+                    return erro(ERRO_LOGICA, "Senha incorreta!\n");
+                }
+                return ok_data(u);
+            }
+        }
+    }
+
+    fclose(f);
+    return erro(ERRO_LOGICA, "Username incorreto!\n");
+}
+
+Result criar_token(User *u){
+
+    return ok();
+}
+
 Result cadastrar_user(User *u){
     FILE *f = escrever_no_csv("users.csv", "ID,NOME,CARGO,SENHA\n");
 
     if (f == NULL) return erro(ERRO_ARQUIVO, "erro ao abrir o arquivo users.csv");
 
-    if (existe_nome((u->nome))) {
-        return erro(ERRO_LOGICA, "Username ja esta em uso!");
+    Result r = existe_nome(u->nome);
+    if (r.code != OK) {
+        return erro(r.code, r.msg);
     }
+    //if ( u->cargo == NULL) u->cargo = PADRAO;
+    int id = ultimo_id("users.csv")+1;
 
-    fprintf(f,"%d,%s,%d,%s\n",ultimo_id("users.csv")+1, u->nome, u->cargo,u->senha);
+    fprintf(f,"%d,%s,%d,%s\n",id , u->nome, PADRAO,u->senha);
 
     fclose(f);
-    return ok();
+    u->id = id;
+    return ok_data(u);
 }
 
-User* procura_user(int id){
+Result procura_user(int id){
     FILE *f = abrir_csv("users.csv");
+    if (f == NULL) return erro(ERRO_ARQUIVO, "erro ao abrir o arquivo users.csv");
     char linha[256];
     
     static User user;
@@ -230,13 +267,13 @@ User* procura_user(int id){
                 user.cargo = int_pra_cargo(cargo_lido);
                 strcpy(user.senha, senha);
                 fclose(f);
-                return &user;
+                return ok_data(&user);
             }
         }
     }
 
     fclose(f);
-    return NULL;
+    return erro(ERRO_LOGICA, "Usuario não encontrado!\n");
 }
 
 

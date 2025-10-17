@@ -23,8 +23,7 @@ typedef struct {
 Cargo int_pra_cargo(int valor);
 const char* cargo_pra_texto(Cargo c);
 
-User* procura_user(int id);
-// essa função retorna NULL quando da erro
+Result procura_user(int id);
 
 User* procura_user_por_nome(const char *nome_busca);
 // recebe um username e procura o usuario em questão;
@@ -38,11 +37,12 @@ Result cadastrar_user(User *u);
 void singin();
 // fluxo de cadastro de user
 
-int existe_nome(const char *username);
+Result existe_nome(const char *username);
+
+Result autenticar(const char *username, char *senha);
 
 void cifrar();
 
-int autenticar();
 void login();
 void cifra_idiota(char *senha);
 
