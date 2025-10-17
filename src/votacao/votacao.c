@@ -9,7 +9,7 @@
 
 int verificar_votacao(int id){
 
-FILE *f = abrir_csv("votacao.csv", "r");
+FILE *f = abrir_csv("votacao.csv");
     char linha[256];
 
     while (fgets(linha, sizeof(linha), f)){

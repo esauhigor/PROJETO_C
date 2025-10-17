@@ -211,7 +211,7 @@ Result cadastrar_user(User *u){
 }
 
 User* procura_user(int id){
-    FILE *f = abrir_csv("users.csv", "r");
+    FILE *f = abrir_csv("users.csv");
     char linha[256];
     
     static User user;
@@ -242,13 +242,12 @@ User* procura_user(int id){
 
 
 User* lista_users_por_cargo(Cargo cargo, int *quantidade) {
-    FILE *f = abrir_csv("users.csv", "r");
+    FILE *f = abrir_csv("users.csv");
     if (!f) return NULL;
 
     char linha[256];
     *quantidade = 0;
-
-    User *lista = malloc(sizeof(User) * 1); // começa com 1, vai realocando
+    User *lista = NULL;
 
     // Ignora cabeçalho
     fgets(linha, sizeof(linha), f);
@@ -259,8 +258,13 @@ User* lista_users_por_cargo(Cargo cargo, int *quantidade) {
 
         if (sscanf(linha, "%d,%49[^,],%d,%49[^\n]", &id_lido, nome, &cargo_lido, senha) == 4) {
             if (int_pra_cargo(cargo_lido) == cargo) {
-                // realoca array para mais 1 usuário
-                lista = realloc(lista, sizeof(User) * (*quantidade + 1));
+                User *tmp = realloc(lista, sizeof(User) * (*quantidade + 1));
+                if (!tmp) {
+                    free(lista);
+                    fclose(f);
+                    return NULL;
+                }
+                lista = tmp;
                 lista[*quantidade].id = id_lido;
                 strcpy(lista[*quantidade].nome, nome);
                 lista[*quantidade].cargo = int_pra_cargo(cargo_lido);
@@ -279,5 +283,3 @@ User* lista_users_por_cargo(Cargo cargo, int *quantidade) {
 
     return lista;
 }
-
-

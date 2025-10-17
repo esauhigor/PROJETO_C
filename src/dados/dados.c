@@ -12,13 +12,13 @@ int arquivo_existe(const char* arquivo) {
     return (stat(caminho, &buffer) == 0);
 }
 
-FILE* abrir_csv(const char* arquivo, const char* modo) {
+FILE* abrir_csv(const char* arquivo) {
     char caminho[256];
     snprintf(caminho, sizeof(caminho), "%s%s", DATA_DIR, arquivo);
 
-    FILE* f = fopen(caminho, modo);
+    FILE* f = fopen(caminho, "a");
     if (!f) {
-        printf("Erro ao abrir arquivo %s com modo %s\n", caminho, modo);
+        printf("Erro ao abrir arquivo %s\n", caminho);
         return NULL;
     }
 

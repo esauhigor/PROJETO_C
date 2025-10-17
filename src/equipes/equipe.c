@@ -101,7 +101,7 @@ int cadastrar_equipe(User *usuario_logado) {
 // SALVAR EQUIPE NO CSV
 // ==============================
 int salvar_equipe(const Equipe *e) {
-    FILE *f = abrir_csv("equipes.csv", "a");
+    FILE *f = escrever_no_csv("equipes.csv", "ID,ID_HACKATHON,ID_MENTOR,NOME_EQUIPE\n");
     if (!f) return 0;
 
     fprintf(f, "%d,%d,%d,%s\n", e->id, e->id_hack, e->id_mentor, e->nome);
@@ -109,11 +109,12 @@ int salvar_equipe(const Equipe *e) {
     return 1;
 }
 
+
 // ==============================
 // VERIFICAR DUPLICIDADE DE EQUIPE
 // ==============================
 int equipe_ja_existe(const char *nome) {
-    FILE *f = abrir_csv("equipes.csv", "r");
+    FILE *f = abrir_csv("equipes.csv");
     if (!f) return 0;
 
     char linha[256];
@@ -138,7 +139,7 @@ int equipe_ja_existe(const char *nome) {
 // PARTICIPANTE JÁ VINCULADO
 // ==============================
 int participante_ja_vinculado(int id_user) {
-    FILE *f = abrir_csv("user_equipe.csv", "r");
+    FILE *f = abrir_csv("user_equipe.csv");
     if (!f) return 0;
 
     char linha[100];
