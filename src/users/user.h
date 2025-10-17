@@ -38,6 +38,8 @@ void cifrar();
 int autenticar();
 void login();
 
+void printU();
+
 
 
 #endif

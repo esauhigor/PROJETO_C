@@ -21,6 +21,6 @@ int main() {
     free(admins); // sempre liberar memória*/
 
     singin();
-    
+
     return 0;
 }
