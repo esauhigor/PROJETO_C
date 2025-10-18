@@ -229,6 +229,8 @@ User* procura_user(int id){
                 strcpy(user.nome, nome);
                 user.cargo = int_pra_cargo(cargo_lido);
                 strcpy(user.senha, senha);
+                User* u = malloc(sizeof(User));
+                *u=user;
                 fclose(f);
                 return &user;
             }
