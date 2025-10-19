@@ -20,6 +20,8 @@ typedef struct {
     char senha[50];
 } User;
 
+
+
 Cargo int_pra_cargo(int valor);
 const char* cargo_pra_texto(Cargo c);
 
@@ -34,12 +36,7 @@ User* lista_users_por_cargo(Cargo cargo, int *quantidade);
 Result cadastrar_user(User *u);
 //essa função retorna 0 quando da erro
 
-void singin();
-// fluxo de cadastro de user
-
 Result existe_nome(const char *username);
-
-Result autenticar(const char *username, char *senha);
 
 void cifrar();
 

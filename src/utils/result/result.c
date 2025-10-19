@@ -11,6 +11,7 @@ Result ok() {
     return (Result){ OK, NULL, NULL};
 }
 
+// Retorno de sucesso com dados dinamicos de retorno
 Result ok_data(void *data){
     return (Result){ OK, NULL, data};
 }

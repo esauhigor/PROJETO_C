@@ -8,6 +8,8 @@
 #include <stdlib.h>
 #include <ctype.h>
 #include <stdlib.h>
+#include <time.h>
+#include <stdint.h>
 
 #define MIN_USERNAME_LEN 3
 #define MAX_USERNAME_LEN 20
@@ -157,76 +159,6 @@ Result existe_nome(const char *username){
     return erro(ERRO_LOGICA, "Usuario não existe\n");
 }
 
-void singin() {
-    User e;
-
-    // Leitura e validação do username
-    while (1) {
-        printf("Username: ");
-        fgets(e.nome, sizeof(e.nome), stdin);
-        e.nome[strcspn(e.nome, "\n")] = '\0';
-
-        if (validar_username(e.nome)) break; // válido -> sai do loop
-        printf("Tente novamente.\n\n");
-    }
-
-    // Leitura da senha
-    while(1){
-    printf("Senha: ");
-    fgets(e.senha, sizeof(e.senha), stdin);
-    e.senha[strcspn(e.senha, "\n")] = '\0';
-
-    if (validar_senha(e.senha)) break; // válido -> sai do loop
-        printf("Tente novamente.\n\n");
-    }
-    
-    cifra_idiota(e.senha);
-
-    Result r = cadastrar_user(&e);
-
-    if (r.code == OK) {
-        printf("Usuário criado: %s (%s)\n", e.nome, cargo_pra_texto(e.cargo));
-    } else {
-        print_err(&r);
-    }
-
-    
-}
-
-Result autenticar(const char *username, char *senha){
-    FILE *f = abrir_csv("users.csv");
-
-    if (!f){
-        return erro(ERRO_ARQUIVO, "Erro ao abrir o arquivo users.csv!\n");
-    }
-    char linha[256];
-    User *u = {0};
-
-    // Ignora o cabeçalho
-    fgets(linha, sizeof(linha), f);
-
-    while (fgets(linha, sizeof(linha), f)) {
-        if (sscanf(linha, "%d,%49[^,],%d,%49[^\n]", &u->id, u->nome, &u->cargo, u->senha) == 4) {
-            if (strcmp(username, u->nome) == 0) {
-                fclose(f);
-                cifra_idiota(senha);
-                if (strcmp(u->senha, senha) != 0){
-                    return erro(ERRO_LOGICA, "Senha incorreta!\n");
-                }
-                return ok_data(u);
-            }
-        }
-    }
-
-    fclose(f);
-    return erro(ERRO_LOGICA, "Username incorreto!\n");
-}
-
-Result criar_token(User *u){
-
-    return ok();
-}
-
 Result cadastrar_user(User *u){
     FILE *f = escrever_no_csv("users.csv", "ID,NOME,CARGO,SENHA\n");
 
@@ -239,6 +171,7 @@ Result cadastrar_user(User *u){
     //if ( u->cargo == NULL) u->cargo = PADRAO;
     int id = ultimo_id("users.csv")+1;
 
+
     fprintf(f,"%d,%s,%d,%s\n",id , u->nome, PADRAO,u->senha);
 
     fclose(f);
@@ -250,8 +183,7 @@ Result procura_user(int id){
     FILE *f = abrir_csv("users.csv");
     if (f == NULL) return erro(ERRO_ARQUIVO, "erro ao abrir o arquivo users.csv");
     char linha[256];
-    
-    static User user;
+
     int id_lido, cargo_lido;
     char nome[50], senha[50];
 
@@ -262,12 +194,17 @@ Result procura_user(int id){
         // CSV: ID,NOME,CARGO,SENHA
         if (sscanf(linha, "%d,%49[^,],%d,%49[^\n]", &id_lido, nome, &cargo_lido, senha) == 4) {
             if (id_lido == id) {
-                user.id = id_lido;
-                strcpy(user.nome, nome);
-                user.cargo = int_pra_cargo(cargo_lido);
-                strcpy(user.senha, senha);
+                User *user = malloc(sizeof(User));
+                if (user == NULL) {
+                    fclose(f);
+                    return erro(ERRO_MEMORIA, "Falha ao alocar memória para User");
+                }
+                user->id = id_lido;
+                strcpy(user->nome, nome);
+                user->cargo = int_pra_cargo(cargo_lido);
+                strcpy(user->senha, senha);
                 fclose(f);
-                return ok_data(&user);
+                return ok_data(user);
             }
         }
     }
@@ -275,8 +212,6 @@ Result procura_user(int id){
     fclose(f);
     return erro(ERRO_LOGICA, "Usuario não encontrado!\n");
 }
-
-
 
 User* lista_users_por_cargo(Cargo cargo, int *quantidade) {
     FILE *f = abrir_csv("users.csv");
