@@ -38,6 +38,41 @@ void singin() {
 
 }
 
+void login() {
+    const char *nome[50], *senha[50];
+
+    // Leitura e validação do username
+    while (1) {
+        printf("Username: ");
+        fgets(nome, sizeof(nome), stdin);
+        nome[strcspn(nome, "\n")] = '\0';
+
+        if (validar_username(nome)) break; // válido -> sai do loop
+        printf("Tente novamente.\n\n");
+    }
+
+    // Leitura da senha
+    while(1){
+    printf("Senha: ");
+    fgets(senha, sizeof(senha), stdin);
+    senha[strcspn(senha, "\n")] = '\0';
+
+    if (validar_senha(senha)) break; // válido -> sai do loop
+        printf("Tente novamente.\n\n");
+    }
+
+    Result r = login_usuario(nome, senha);
+    
+    if (r.code == OK) {
+        Token *t = (Token *) r.data;  // converte void* para Token*
+        printf("Usuário criado: %s (ID: %d, Token: %s)\n", t->nome, t->id, t->token);
+        free(t);
+    } else {
+        print_err(&r);
+    }
+
+}
+
 Result login_usuario(const char *username, char *senha) {
     Result r = autenticar(username, senha);
     if (r.code != OK)
@@ -51,6 +86,7 @@ Result login_usuario(const char *username, char *senha) {
     Token *user = r.data;
     t->id = user->id;
     strcpy(t->nome, user->nome);
+    free(user);
 
     // Cria token
     Result rtoken = criar_token(t->id);
@@ -59,6 +95,7 @@ Result login_usuario(const char *username, char *senha) {
         return rtoken;
     }
     strcpy(t->token, rtoken.data);
+    free(rtoken.data);
 
     // Salva no CSV
     Result radd = adicionar_token(t);
