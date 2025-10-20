@@ -16,7 +16,7 @@ FILE* abrir_csv(const char* arquivo) {
     char caminho[256];
     snprintf(caminho, sizeof(caminho), "%s%s", DATA_DIR, arquivo);
 
-    FILE* f = fopen(caminho, "a");
+    FILE* f = fopen(caminho, "r");
     if (!f) {
         printf("Erro ao abrir arquivo %s\n", caminho);
         return NULL;
