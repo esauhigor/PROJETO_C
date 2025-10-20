@@ -28,7 +28,8 @@ SRC = $(wildcard src/*.c) \
       $(wildcard src/hackathons/*.c) \
       $(wildcard src/votacao/*.c) \
       $(wildcard src/utils/files/*.c) \
-      $(wildcard src/utils/result/*.c)
+      $(wildcard src/utils/result/*.c) \
+	  $(wildcard src/auth/*.c)
 
 OBJ = $(patsubst src/%.c,$(BUILD_DIR)/%.o,$(SRC))
 
@@ -63,6 +64,7 @@ prepare:
 	@if not exist $(BUILD_DIR)\utils mkdir $(BUILD_DIR)\utils
 	@if not exist $(BUILD_DIR)\utils\files mkdir $(BUILD_DIR)\utils\files
 	@if not exist $(BUILD_DIR)\utils\result mkdir $(BUILD_DIR)\utils\result
+	@if not exist $(BUILD_DIR)\auth mkdir $(BUILD_DIR)\auth
 
 # ==========================
 # Limpeza

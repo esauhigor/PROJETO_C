@@ -213,45 +213,4 @@ Result procura_user(int id){
     return erro(ERRO_LOGICA, "Usuario não encontrado!\n");
 }
 
-User* lista_users_por_cargo(Cargo cargo, int *quantidade) {
-    FILE *f = abrir_csv("users.csv");
-    if (!f) return NULL;
-
-    char linha[256];
-    *quantidade = 0;
-    User *lista = NULL;
-
-    // Ignora cabeçalho
-    fgets(linha, sizeof(linha), f);
-
-    while (fgets(linha, sizeof(linha), f)) {
-        int id_lido, cargo_lido;
-        char nome[50], senha[50];
-
-        if (sscanf(linha, "%d,%49[^,],%d,%49[^\n]", &id_lido, nome, &cargo_lido, senha) == 4) {
-            if (int_pra_cargo(cargo_lido) == cargo) {
-                User *tmp = realloc(lista, sizeof(User) * (*quantidade + 1));
-                if (!tmp) {
-                    free(lista);
-                    fclose(f);
-                    return NULL;
-                }
-                lista = tmp;
-                lista[*quantidade].id = id_lido;
-                strcpy(lista[*quantidade].nome, nome);
-                lista[*quantidade].cargo = int_pra_cargo(cargo_lido);
-                strcpy(lista[*quantidade].senha, senha);
-                (*quantidade)++;
-            }
-        }
-    }
-
-    fclose(f);
-
-    if (*quantidade == 0) {
-        free(lista);
-        return NULL;
-    }
-
-    return lista;
-}
+/**/

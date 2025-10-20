@@ -38,10 +38,12 @@ Result cadastrar_user(User *u);
 
 Result existe_nome(const char *username);
 
-void cifrar();
 
-void login();
 void cifra_idiota(char *senha);
+
+int validar_username(const char *nome);
+int validar_senha(const char *senha);
+
 
 
 
