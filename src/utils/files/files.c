@@ -1,8 +1,38 @@
 #include "files.h"
 #include "../../dados/dados.h"
 #include "../../users/user.h"
+#include "../../auth/auth.h"
 
 #include <string.h>
+#include <stdio.h>
+
+Result validar_token(char *t){
+    FILE *f = abrir_csv("login.csv");
+
+    if (!f)
+        return erro(ERRO_ARQUIVO, "erro ao abrir o arquivo\nFN: validar_token()\n");
+
+    int id;
+    char nome[50], token[50], linha[256];
+    
+    fgets(linha, sizeof(linha), f);
+    while (fgets(linha, sizeof(linha), f)){
+        if (sscanf(linha, "%d,%49[^,],%49[^\n]", &id, nome, token) == 3){
+            if (strcmp(token, t) == 0){
+                Token *tok = malloc(sizeof(Token));
+                if ( !t)
+                    return erro(ERRO_MEMORIA, "Erro ao alocar memoria para o token\nFN: validar_token()\n");
+
+                tok->id = id;
+                strcpy(tok->nome, nome);
+                strcpy(tok->token, token);
+                return ok_data(tok);
+            }
+        }
+    }    
+
+    return ok();
+}
 
 int ultimo_id(const char *nome_arquivo){
 
