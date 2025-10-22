@@ -5,34 +5,46 @@
 
 #include <string.h>
 #include <stdio.h>
+#include <stdlib.h>
 
-Result validar_token(char *t){
+
+Result validar_token(char *t) {
+    if (!t || strlen(t) == 0)
+        return erro(ERRO_INVALIDO, "Token vazio!\nFN: validar_token()\n");
+
     FILE *f = abrir_csv("login.csv");
-
     if (!f)
-        return erro(ERRO_ARQUIVO, "erro ao abrir o arquivo\nFN: validar_token()\n");
+        return erro(ERRO_ARQUIVO, "Erro ao abrir o arquivo\nFN: validar_token()\n");
 
     int id;
     char nome[50], token[50], linha[256];
-    
+
+    // Ignora cabeçalho
     fgets(linha, sizeof(linha), f);
-    while (fgets(linha, sizeof(linha), f)){
-        if (sscanf(linha, "%d,%49[^,],%49[^\n]", &id, nome, token) == 3){
-            if (strcmp(token, t) == 0){
+
+    while (fgets(linha, sizeof(linha), f)) {
+        if (sscanf(linha, "%d,%49[^,],%49[^\n]", &id, nome, token) == 3) {
+            if (strcmp(token, t) == 0) {
                 Token *tok = malloc(sizeof(Token));
-                if ( !t)
-                    return erro(ERRO_MEMORIA, "Erro ao alocar memoria para o token\nFN: validar_token()\n");
+                if (!tok) {
+                    fclose(f);
+                    return erro(ERRO_MEMORIA, "Erro ao alocar memória para o token\nFN: validar_token()\n");
+                }
 
                 tok->id = id;
                 strcpy(tok->nome, nome);
                 strcpy(tok->token, token);
+
+                fclose(f);
                 return ok_data(tok);
             }
         }
-    }    
+    }
 
-    return ok();
+    fclose(f);
+    return erro(ERRO_LOGICA, "Token inválido!\nFN: validar_token()\n");
 }
+
 
 int ultimo_id(const char *nome_arquivo){
 
