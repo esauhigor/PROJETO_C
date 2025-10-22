@@ -118,12 +118,12 @@ Result adicionar_token(Token *t){
     if (!t)
         return erro(ERRO_INVALIDO, "Token nulo\n");
 
-    FILE *f = escrever_no_csv("login.csv", "ID_USER,TOKEN\n");
+    FILE *f = escrever_no_csv("login.csv", "ID_USER,NOME,TOKEN\n");
 
     if (!f)
         return erro(ERRO_ARQUIVO, "Erro ao abrir login.csv\n");
 
-    if (fprintf(f, "%d,%.16s\n", t->id, t->token) < 0) {
+    if (fprintf(f, "%d,%s,%.16s\n", t->id,t->nome, t->token) < 0) {
         fclose(f);
         return erro(ERRO_ARQUIVO, "Erro ao escrever em login.csv\n");
     }
@@ -137,7 +137,7 @@ void singin() {
     User e;
 
     // Leitura e validação do username
-    printf("###Cadastro###\n");
+    printf("###Cadastro ###\n");
     while (1) {
         
         printf("Username: ");

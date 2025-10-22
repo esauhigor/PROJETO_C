@@ -165,7 +165,7 @@ Result cadastrar_user(User *u){
     if (f == NULL) return erro(ERRO_ARQUIVO, "erro ao abrir o arquivo users.csv");
 
     Result r = existe_nome(u->nome);
-    if (r.code != OK) {
+    if (r.code == OK) {
         return erro(r.code, r.msg);
     }
     //if ( u->cargo == NULL) u->cargo = PADRAO;
