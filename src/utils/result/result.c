@@ -36,8 +36,7 @@ void print_err(Result *r){
 
 
 
-
-
+/*
 // ==========================================================
 // EXEMPLOS DE USO
 // ==========================================================
@@ -62,17 +61,6 @@ Result abrir_arquivo(const char *caminho) {
     return ok();
 }
 
-// 3️⃣ Exemplo com alocação dinâmica
-Result alocar_memoria(size_t tamanho) {
-    void *ptr = malloc(tamanho);
-    if (!ptr)
-        return erro(ERRO_MEMORIA, "Falha ao alocar memória");
-
-    printf("Memória de %zu bytes alocada!\n", tamanho);
-    free(ptr);
-    return ok();
-}
-
 // 4️⃣ Exemplo encadeado — função que chama outras
 Result carregar_dados(void) {
     Result r;
@@ -88,3 +76,4 @@ Result carregar_dados(void) {
     // Tudo certo
     return ok();
 }
+    */

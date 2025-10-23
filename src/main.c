@@ -4,7 +4,6 @@
 #include "auth/auth.h"
 #include "utils/files/files.h"
 
-// Função principal
 int main() {
     setlocale(LC_ALL, "Portuguese"); // acentos no terminal
 
