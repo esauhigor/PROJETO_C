@@ -7,13 +7,19 @@
 // ==========================================================
 
 // Retorno de sucesso (sem mensagem)
-Result ok(void) {
-    return (Result){ OK, NULL };
+Result ok() {
+    return (Result){ OK, NULL, NULL};
 }
+
+// Retorno de sucesso com dados dinamicos de retorno
+Result ok_data(void *data){
+    return (Result){ OK, NULL, data};
+}
+
 
 // Retorno de erro com código e mensagem
 Result erro(Res code, const char *msg) {
-    return (Result){ code, msg };
+    return (Result){ code, msg, NULL};
 }
 
 // Imprime o erro no terminal
@@ -30,8 +36,7 @@ void print_err(Result *r){
 
 
 
-
-
+/*
 // ==========================================================
 // EXEMPLOS DE USO
 // ==========================================================
@@ -56,17 +61,6 @@ Result abrir_arquivo(const char *caminho) {
     return ok();
 }
 
-// 3️⃣ Exemplo com alocação dinâmica
-Result alocar_memoria(size_t tamanho) {
-    void *ptr = malloc(tamanho);
-    if (!ptr)
-        return erro(ERRO_MEMORIA, "Falha ao alocar memória");
-
-    printf("Memória de %zu bytes alocada!\n", tamanho);
-    free(ptr);
-    return ok();
-}
-
 // 4️⃣ Exemplo encadeado — função que chama outras
 Result carregar_dados(void) {
     Result r;
@@ -82,3 +76,4 @@ Result carregar_dados(void) {
     // Tudo certo
     return ok();
 }
+    */

@@ -1,5 +1,9 @@
 ID,ID_HACKATHON,ID_MENTOR,NOME_EQUIPE
 1,1,4,fazuL
 2,1,4,higo
+<<<<<<< HEAD
 6422016,1,4,22ebozo
 1993524276,1,4,fg
+=======
+3,1,4,22ebozo
+>>>>>>> origin/login

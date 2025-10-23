@@ -8,6 +8,8 @@
 #include <stdlib.h>
 #include <ctype.h>
 #include <stdlib.h>
+#include <time.h>
+#include <stdint.h>
 
 #define MIN_USERNAME_LEN 3
 #define MAX_USERNAME_LEN 20
@@ -129,12 +131,12 @@ void cifra_idiota(char *senha) {
     }
 }
 
-int existe_nome(const char *username){
+Result existe_nome(const char *username){
     FILE *f = abrir_csv("users.csv");
     char linha[256];
 
     if (!f){
-        return -1;
+        return erro(ERRO_ARQUIVO, "Erro ao abrir o arquivo users.csv!\n");
     }
     
     int id_lido;
@@ -148,51 +150,13 @@ int existe_nome(const char *username){
         if (sscanf(linha, "%d,%49[^,],", &id_lido, nome) == 2) {
             if (strcmp(username, nome) == 0) {
                 fclose(f);
-                return 1;
+                return ok();
             }
         }
     }
 
     fclose(f);
-    return 0;
-}
-
-void singin() {
-    User e;
-
-    // Leitura e validação do username
-    while (1) {
-        printf("Username: ");
-        fgets(e.nome, sizeof(e.nome), stdin);
-        e.nome[strcspn(e.nome, "\n")] = '\0';
-
-        if (validar_username(e.nome)) break; // válido -> sai do loop
-        printf("Tente novamente.\n\n");
-    }
-
-    // Leitura da senha
-    while(1){
-    printf("Senha: ");
-    fgets(e.senha, sizeof(e.senha), stdin);
-    e.senha[strcspn(e.senha, "\n")] = '\0';
-
-    if (validar_senha(e.senha)) break; // válido -> sai do loop
-        printf("Tente novamente.\n\n");
-    }
-    
-    cifra_idiota(e.senha);
-
-    e.cargo = PADRAO;
-
-    Result r = cadastrar_user(&e);
-
-    if (r.code == OK) {
-        printf("Usuário criado: %s (%s)\n", e.nome, cargo_pra_texto(e.cargo));
-    } else {
-        print_err(&r);
-    }
-
-    
+    return erro(ERRO_LOGICA, "Usuario não existe\n");
 }
 
 Result cadastrar_user(User *u){
@@ -200,21 +164,26 @@ Result cadastrar_user(User *u){
 
     if (f == NULL) return erro(ERRO_ARQUIVO, "erro ao abrir o arquivo users.csv");
 
-    if (existe_nome((u->nome))) {
-        return erro(ERRO_LOGICA, "Username ja esta em uso!");
+    Result r = existe_nome(u->nome);
+    if (r.code == OK) {
+        return erro(r.code, r.msg);
     }
+    //if ( u->cargo == NULL) u->cargo = PADRAO;
+    int id = ultimo_id("users.csv")+1;
 
-    fprintf(f,"%d,%s,%d,%s\n",ultimo_id("users.csv")+1, u->nome, u->cargo,u->senha);
+
+    fprintf(f,"%d,%s,%d,%s\n",id , u->nome, PADRAO,u->senha);
 
     fclose(f);
-    return ok();
+    u->id = id;
+    return ok_data(u);
 }
 
-User* procura_user(int id){
+Result procura_user(int id){
     FILE *f = abrir_csv("users.csv");
+    if (f == NULL) return erro(ERRO_ARQUIVO, "erro ao abrir o arquivo users.csv");
     char linha[256];
-    
-    static User user;
+
     int id_lido, cargo_lido;
     char nome[50], senha[50];
 
@@ -225,6 +194,7 @@ User* procura_user(int id){
         // CSV: ID,NOME,CARGO,SENHA
         if (sscanf(linha, "%d,%49[^,],%d,%49[^\n]", &id_lido, nome, &cargo_lido, senha) == 4) {
             if (id_lido == id) {
+<<<<<<< HEAD
                 user.id = id_lido;
                 strcpy(user.nome, nome);
                 user.cargo = int_pra_cargo(cargo_lido);
@@ -260,25 +230,25 @@ User* lista_users_por_cargo(Cargo cargo, int *quantidade) {
                 User *tmp = realloc(lista, sizeof(User) * (*quantidade + 1));
                 if (!tmp) {
                     free(lista);
+=======
+                User *user = malloc(sizeof(User));
+                if (user == NULL) {
+>>>>>>> origin/login
                     fclose(f);
-                    return NULL;
+                    return erro(ERRO_MEMORIA, "Falha ao alocar memória para User");
                 }
-                lista = tmp;
-                lista[*quantidade].id = id_lido;
-                strcpy(lista[*quantidade].nome, nome);
-                lista[*quantidade].cargo = int_pra_cargo(cargo_lido);
-                strcpy(lista[*quantidade].senha, senha);
-                (*quantidade)++;
+                user->id = id_lido;
+                strcpy(user->nome, nome);
+                user->cargo = int_pra_cargo(cargo_lido);
+                strcpy(user->senha, senha);
+                fclose(f);
+                return ok_data(user);
             }
         }
     }
 
     fclose(f);
-
-    if (*quantidade == 0) {
-        free(lista);
-        return NULL;
-    }
-
-    return lista;
+    return erro(ERRO_LOGICA, "Usuario não encontrado!\n");
 }
+
+/**/

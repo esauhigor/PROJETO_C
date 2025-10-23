@@ -1,0 +1,101 @@
+Organização das Funções para o Novo Fluxo do Projeto
+Perfeito! Entendi as mudanças que você quer no fluxo do projeto. Vamos reorganizar tudo de forma clara e modular, incorporando os novos CSVs e os fluxos principais que você descreveu. Vou focar em:
+
+Resumo das mudanças: Para alinhar o que estamos mudando.
+Funções necessárias: Uma lista das funções principais que você vai precisar (baseadas no que já tem + as novas ideias). Para cada uma, descrevo entrada (parâmetros de input), saída (retorno ou efeitos colaterais) e um breve propósito. Vou agrupá-las por categoria para facilitar.
+Fluxo geral sugerido: Um diagrama mental simples (em texto) de como as funções se conectam, para você visualizar o "novo fluxo do projeto".
+
+Isso vai te ajudar a implementar passo a passo, sem bagunça. Se quiser código de exemplo para alguma função ou ajustes, é só pedir!
+Resumo das Mudanças
+
+Novos CSVs:
+
+participantes.csv: Armazena ligações simples entre participantes e hackathons (ID_USER,ID_HACKATHON). Isso permite filtrar participantes por hackathon específico.
+mentores.csv: Armazena ligações de mentores com hackathons (ID_MENTOR,ID_HACK). A ligação mentor-equipe continua no equipes.csv (via ID_MENTOR na estrutura Equipe).
+
+
+Fluxos principais:
+
+Dividir equipes: Gera X equipes (ex: 5 fixas) e distribui participantes aleatoriamente de um hackathon específico, com limite máximo por equipe (ex: 5 participantes).
+Nomear equipes: Atribui nomes únicos para as equipes geradas (uma vez só, talvez com sugestões ou input manual).
+Adicionar mentores: Para cada equipe, seleciona e vincula um mentor disponível para o hackathon.
+
+
+Impacto no código existente: Vamos manter o equipes.csv e user_equipe.csv, mas adaptar funções para usar os novos CSVs. O menu pode ser expandido para incluir essas novas opções (ex: adicionar opções 3 e 4 no menu_equipes para "Dividir Equipes" e "Nomear e Atribuir Mentores").
+
+Funções Necessárias
+Vou listar só as essenciais para os novos fluxos (não repetindo as que você já tem, como menu_equipes, cadastrar_equipe, etc.). Elas se integram ao que existe (ex: verifica_cargo, ultimo_id, salvar_vinculo_participante, etc.). Assumo que você vai precisar de funções auxiliares para ler/escrever CSVs (como abrir_csv e escrever_no_csv que já usa).
+1. Funções para Gerenciar Participantes por Hackathon (Novo CSV: participantes.csv)
+
+cadastrar_participante_hack
+Propósito: Vincula um usuário (participante) a um hackathon específico no CSV.
+Entrada: User *usuario_logado (para checar permissões), int id_user, int id_hack.
+Saída: int (1 se salvo com sucesso, 0 se erro ou duplicado).
+(Efeito: Adiciona linha no CSV; checa se já vinculado via participante_ja_vinculado_hack.)
+participante_ja_vinculado_hack
+Propósito: Verifica se um participante já está ligado a um hackathon específico.
+Entrada: int id_user, int id_hack.
+Saída: int (1 se já vinculado, 0 se não).
+(Efeito: Lê o CSV e compara.)
+listar_participantes_hack
+Propósito: Retorna lista de IDs de participantes de um hackathon (para usar na divisão de equipes).
+Entrada: int id_hack, int *tamanho (ponteiro para retornar o número de participantes).
+Saída: int* (array dinâmico de IDs; aloque com malloc e retorne o array).
+(Efeito: Lê o CSV e filtra por ID_HACKATHON.)
+
+2. Funções para Gerenciar Mentores por Hackathon (Novo CSV: mentores.csv)
+
+cadastrar_mentor_hack
+Propósito: Vincula um mentor a um hackathon no CSV.
+Entrada: User *usuario_logado (para permissões), int id_mentor, int id_hack.
+Saída: int (1 se salvo, 0 se erro ou duplicado).
+(Efeito: Adiciona linha no CSV; checa via mentor_ja_vinculado_hack.)
+mentor_ja_vinculado_hack
+Propósito: Verifica se um mentor já está ligado a um hackathon.
+Entrada: int id_mentor, int id_hack.
+Saída: int (1 se já, 0 se não).
+(Efeito: Lê o CSV.)
+listar_mentores_hack
+Propósito: Retorna lista de IDs de mentores disponíveis para um hackathon.
+Entrada: int id_hack, int *tamanho (ponteiro para retornar o número de mentores).
+Saída: int* (array de IDs; aloque com malloc e retorne o array).
+(Efeito: Lê o CSV e filtra.)
+
+3. Funções para Dividir Equipes (Fluxo Principal: Divisão Aleatória)
+
+dividir_equipes
+Propósito: Gera N equipes (ex: 5 fixas) vazias para um hackathon, distribui participantes aleatoriamente, com limite máx. por equipe (ex: 5).
+Entrada: User *usuario_logado (permissões), int id_hack, int num_equipes (padrão 5), int max_por_equipe (padrão 5).
+Saída: int (1 se todas equipes criadas e participantes distribuídos, 0 se erro ou poucos participantes).
+(Efeito: Chama listar_participantes_hack → embaralha → cria equipes via loop com salvar_equipe (sem nome ainda) → distribui e salva vínculos em user_equipe.csv via salvar_vinculo_participante.)
+embaralhar_participantes
+Propósito: Auxiliar para randomizar a lista de participantes (Fisher-Yates shuffle).
+Entrada: int *participantes, int tamanho.
+Saída: Void (modifica o array in-place).
+(Efeito: Usa <stdlib.h> para rand() e srand(time(NULL)) uma vez no início do programa.)
+
+4. Funções para Nomear Equipes
+
+nomear_equipes
+Propósito: Atribui nomes únicos para as equipes de um hackathon (uma vez só; pode ser manual ou gerado).
+Entrada: User *usuario_logado (permissões), int id_hack, int num_equipes.
+Saída: int (1 se todos nomes salvos, 0 se erro).
+(Efeito: Lista as equipes do hackathon via leitura de equipes.csv → para cada uma, solicita ou gera nome → atualiza o CSV com fprintf ou função de update.)
+gerar_nome_equipe (opcional, auxiliar)
+Propósito: Sugere um nome aleatório ou temático para uma equipe (ex: "Equipe Alpha", "Dragons").
+Entrada: int id_equipe.
+Saída: char* (string com o nome gerado; aloque com malloc).
+(Efeito: Usa array de prefixos/sufixos e rand() para combinar.)
+
+5. Funções para Adicionar Mentores às Equipes
+
+adicionar_mentores_equipes
+Propósito: Para cada equipe de um hackathon, seleciona e vincula um mentor disponível (manual ou aleatório).
+Entrada: User *usuario_logado (permissões), int id_hack, int num_equipes.
+Saída: int (1 se todos mentores atribuídos, 0 se erro ou poucos mentores).
+(Efeito: Chama listar_mentores_hack → lista equipes via equipes.csv → para cada, solicita ou escolhe mentor → atualiza ID_MENTOR no CSV de equipes.)
+atualizar_mentor_equipe (auxiliar)
+Propósito: Atualiza o campo ID_MENTOR de uma equipe específica no CSV.
+Entrada: int id_equipe, int id_mentor.
+Saída: int (1 se atualizado, 0 se não encontrado).
+(Efeito: Lê todo o CSV, reescreve com o update.)
