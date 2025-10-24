@@ -19,4 +19,4 @@ Thumbs.db
 *.tmp
 
 # Arquivos CSV de dados (se quiser manter locais e não subir)
-#dados/*.csv
+dados/*.csv

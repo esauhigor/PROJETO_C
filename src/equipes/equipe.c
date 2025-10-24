@@ -52,7 +52,7 @@ int cadastrar_equipe(User *usuario_logado) {
 
     Equipe e;
 
-    FILE *f = escrever_no_csv("equipes.csv", "ID,ID_HACKATHON,ID_MENTOR,NOME_EQUIPE\n");
+    FILE *f = escrever_no_csv("equipes.csv", "ID,ID_HACKATHON,ID_MENTOR,NOME_EQUIPE");
     if (!f) {
         printf("Erro ao abrir o arquivo de equipes.\n");
         return 0;
@@ -97,8 +97,8 @@ int cadastrar_equipe(User *usuario_logado) {
 // ==============================
 // SALVAR EQUIPE NO CSV
 // ==============================
-int salvar_equipe(const Equipe *e) {
-    FILE *f = escrever_no_csv("equipes.csv", "ID,ID_HACKATHON,ID_MENTOR,NOME_EQUIPE\n");
+int salvar_equipe( Equipe *e) {
+    FILE *f = escrever_no_csv("equipes.csv", "ID,ID_HACKATHON,ID_MENTOR,NOME_EQUIPE");
     if (!f) return 0;
 
     int ultimo = ultimo_id("equipes.csv") +1; 
@@ -193,7 +193,7 @@ int coletar_vinculo_participante(int *id_equipe, int *id_user) {
 // SALVAR VÍNCULO PARTICIPANTE↔EQUIPE
 // ==============================
 int salvar_vinculo_participante(int id_equipe, int id_user) {
-    FILE *f = escrever_no_csv("user_equipe.csv", "ID_EQUIPE,ID_PARTICIPANTE\n");
+    FILE *f = escrever_no_csv("user_equipe.csv", "ID_EQUIPE,ID_PARTICIPANTE");
     if (!f) {
         printf("Erro ao abrir user_equipe.csv\n");
         return 0;

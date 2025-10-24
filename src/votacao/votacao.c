@@ -46,7 +46,7 @@ int abrir_votacao(Votacao *v){
         return 0;
     }
 
-    FILE *f = escrever_no_csv("votacao.csv", "ID,ID_HACK,CONTROL,DATA,JURADOS\n");
+    FILE *f = escrever_no_csv("votacao.csv", "ID,ID_HACK,CONTROL,DATA,JURADOS");
 
     int id = ultimo_id("votacao.csv") +1;
 

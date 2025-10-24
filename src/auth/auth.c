@@ -118,7 +118,7 @@ Result adicionar_token(Token *t){
     if (!t)
         return erro(ERRO_INVALIDO, "Token nulo\n");
 
-    FILE *f = escrever_no_csv("login.csv", "ID_USER,NOME,TOKEN\n");
+    FILE *f = escrever_no_csv("login.csv", "ID_USER,NOME,TOKEN");
 
     if (!f)
         return erro(ERRO_ARQUIVO, "Erro ao abrir login.csv\n");

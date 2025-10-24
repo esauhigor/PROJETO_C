@@ -160,7 +160,7 @@ Result existe_nome(const char *username){
 }
 
 Result cadastrar_user(User *u){
-    FILE *f = escrever_no_csv("users.csv", "ID,NOME,CARGO,SENHA\n");
+    FILE *f = escrever_no_csv("users.csv", "ID,NOME,CARGO,SENHA");
 
     if (f == NULL) return erro(ERRO_ARQUIVO, "erro ao abrir o arquivo users.csv");
 

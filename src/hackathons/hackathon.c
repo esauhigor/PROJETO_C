@@ -6,7 +6,7 @@
 
 
 void criar_hackathon(Hackathon *evento){
-    FILE *f = escrever_no_csv("hackathons.csv", "ID,DATA_INICIO,DATA_FIM,TEMA,MAXIMO,VOTACAO,REGRAS\n");
+    FILE *f = escrever_no_csv("hackathons.csv", "ID,DATA_INICIO,DATA_FIM,TEMA,MAXIMO,VOTACAO,REGRAS");
 
     if (!f){
         printf("erro\n");
