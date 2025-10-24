@@ -22,7 +22,7 @@ void menu_equipes(User *usuario_logado);
 // FUNÇÕES DE CADASTRO DE EQUIPE
 // ==============================
 int cadastrar_equipe(User *usuario_logado);
-int salvar_equipe(const Equipe *e);
+int salvar_equipe( Equipe *e);
 int equipe_ja_existe(const char *nome);
 
 // ==============================

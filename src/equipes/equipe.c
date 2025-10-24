@@ -97,14 +97,21 @@ int cadastrar_equipe(User *usuario_logado) {
 // ==============================
 // SALVAR EQUIPE NO CSV
 // ==============================
-int salvar_equipe(const Equipe *e) {
+int salvar_equipe(Equipe *e) {
     FILE *f = escrever_no_csv("equipes.csv", "ID,ID_HACKATHON,ID_MENTOR,NOME_EQUIPE\n");
     if (!f) return 0;
 
+<<<<<<< HEAD
     int ultimo = ultimo_id("equipes.csv") +1; 
     if (ultimo < 0) return 0;
 
     fprintf(f, "%d,%d,%d,%s\n", ultimo, e->id_hack, e->id_mentor, e->nome);
+=======
+    int ultimo = ultimo_id("equipes.csv"); 
+    if (ultimo < 0) return 0;
+
+    fprintf(f, "%d,%d,%d,%s\n", ultimo +1, e->id_hack, e->id_mentor, e->nome);
+>>>>>>> main
     fclose(f);
     return 1;
 }
